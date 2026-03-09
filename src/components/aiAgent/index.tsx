@@ -91,7 +91,7 @@ function AIAgent() {
 
     return (
         <main className="ai-agent">
-            <section className="ai-agent__body">
+            <section className="ai-agent__body py-5">
                 <div className="ai-agent__body__card">
                     <div className="ai-agent__body__card__header">
                         <div className="ai-agent__body__card__header-left">
@@ -303,7 +303,7 @@ function AIAgent() {
                             data-testid="footer-check-pricing-button"
                             onClick={handleCheckPricing}
                         >
-                            <div className="flex flex-item gap-8">Check Pricing</div>
+                            <div className="flex flex-item gap-8 check-pricing-btn">Check Pricing</div>
                         </FDSButton>
                         to know more.
                         <SVGLoader

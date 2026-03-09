@@ -69,7 +69,7 @@
 
                     // Card header title
                     &-title {
-                        color: var(--salla-light-mode-background-color);
+                        color: var(--salla-light-mode-primary-color);
                     }
 
                     // Card header subtitle
@@ -124,6 +124,16 @@
                     flex: 1 0 0;
                     gap: var(--fds-dimensions-16);
                 }
+
+                &-button {
+                    background-color: var(--salla-light-mode-secondary-color) !important;
+
+                    // lock text color
+                    color: var(--salla-light-mode-primary-color) !important;
+                    -webkit-text-fill-color: var(--salla-light-mode-primary-color); // helps on some browsers
+
+                }
+
             }
 
             &__body {
@@ -185,10 +195,15 @@
 
                 &-info-button {
                     min-height: auto !important;
+
+
+                    // lock text color
+                    color: var(--salla-light-mode-primary-color) !important;
+                    -webkit-text-fill-color: var(--salla-light-mode-primary-color); // helps on some browsers
                 }
 
                 &__section-title {
-                    color: var(--fds-text-subdued-1);
+                    color: var(--salla-light-mode-primary-color);
                 }
 
                 &__icon {
