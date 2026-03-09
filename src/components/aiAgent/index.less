@@ -21,6 +21,9 @@
         flex: 1;
         padding-inline: var(--fds-dimensions-24);
         overflow-y: auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         // Card component
         &__card {
@@ -33,12 +36,12 @@
             border: var(--fds-dimensions-1) solid var(--fds-neutral-grey-40);
             height: 100%;
             overflow: auto;
-            width: 100%;
+
+            max-width: 1200px;
 
             @media (min-width: 768px) {
                 // max-height: calc(100vh - 5.5rem);
                 // height: calc(100vh - 5.5rem);
-                max-width: 100%;
             }
 
             // Card header
@@ -66,7 +69,7 @@
 
                     // Card header title
                     &-title {
-                        color: var(--fds-text-default);
+                        color: var(--salla-light-mode-background-color);
                     }
 
                     // Card header subtitle

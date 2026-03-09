@@ -122,11 +122,6 @@ function AIAgent() {
                                 className="ai-agent__body__card__header-button"
                                 data-testid="setup-button"
                                 onClick={handleSetupRedirection}
-                                disabled={
-                                    !isReadyForSetup
-
-                                }
-
                             >
                                 Setup in 1 click
                             </FDSButton>
@@ -165,7 +160,7 @@ function AIAgent() {
                             showButtons={true}
                         />
                     )}
-                    <div className="ai-agent__body__card__body">
+                    {/* <div className="ai-agent__body__card__body">
                         <div className="ai-agent__body__card__body-icon">
                             <SVGLoader
                                 src="ic_offer_coupon"
@@ -199,8 +194,8 @@ function AIAgent() {
                                 </FDSButton>
                             </div>
                         </div>
-                    </div>
-                    <FDSDivider withLabel={false} />
+                    </div> */}
+                    {/* <FDSDivider withLabel={false} /> */}
                     <div className="ai-agent__body__card__body__connections">
                         <div className="ai-agent__body__card__body__integrations">
                             <FDSTypography
