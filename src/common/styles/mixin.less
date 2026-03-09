@@ -1,0 +1,20 @@
+.mixin-flex(@justifyContent, @alignItems, @flexDirection) {
+    display: flex;
+    justify-content: @justifyContent;
+    align-items: @alignItems;
+    flex-direction: @flexDirection;
+}
+
+.mixin-disable(@opacity: 0.3) {
+    opacity: @opacity;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+
+.hexToRgba(@hex, @alpha: 1) {
+    @red: extract(@hex, 1, 2);
+    @green: extract(@hex, 3, 2);
+    @blue: extract(@hex, 5, 2);
+    @rgba: rgba(@red, @green, @blue, @alpha);
+    background-color: @rgba;
+}
