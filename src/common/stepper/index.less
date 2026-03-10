@@ -1,0 +1,87 @@
+.stepper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fds-dimensions-16);
+  &__step {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: row;
+    gap: var(--fds-dimensions-12);
+
+    &:not(:last-child)::before {
+      content: "";
+      position: absolute;
+      top: calc(var(--fds-dimensions-20) + 2px);
+      left: 9px;
+      width: 2px;
+      height: calc(100% - var(--fds-dimensions-20) + var(--fds-dimensions-12));
+      background-color: var(--fds-primary-20);
+      z-index: 1;
+    }
+
+    &-spinner {
+      & svg {
+        width: var(--fds-dimensions-20) !important;
+        height: var(--fds-dimensions-20) !important;
+        circle:last-child {
+          stroke: var(--salla-success-color);
+        }
+      }
+    }
+    &-left {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      &__counter {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: var(--fds-dimensions-20);
+        width: var(--fds-dimensions-20);
+        padding: var(--fds-dimensions-2) 0;
+        background-color: var(--fds-primary-20);
+        color: var(--salla-light-mode-primary-color);
+        font-size: var(--fds-font-size-s);
+        font-weight: var(--fds-font-weight-600);
+        line-height: var(--fds-line-height-s);
+        border-radius: var(--fds-borderradius-core-full);
+      }
+      &__icon {
+        & svg {
+          width: var(--fds-dimensions-20);
+          height: var(--fds-dimensions-20);
+
+          & path {
+            fill: var(--salla-success-color);
+          }
+        }
+      }
+    }
+
+    &-content {
+      display: flex;
+      flex-direction: column;
+      gap: var(--fds-dimensions-2);
+      &__title {
+        color: var(--salla-primary-color);
+        font-size: var(--fds-font-size-l);
+        font-weight: var(--fds-font-weight-600);
+        line-height: var(--fds-line-height-l);
+      }
+
+      &__subtitle {
+        color: var(--salla-secondary-font-color);
+        font-size: var(--fds-font-size-m);
+        font-weight: var(--fds-font-weight-500);
+        line-height: var(--fds-line-height-m);
+      }
+    }
+
+    .fds-spinner {
+      width: var(--fds-dimensions-24);
+      height: var(--fds-dimensions-24);
+    }
+  }
+}

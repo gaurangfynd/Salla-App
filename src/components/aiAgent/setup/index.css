@@ -1,0 +1,13 @@
+.notification-banner.default.suggestion {
+  border-radius: var(--fds-dimensions-12);
+  border: 1px solid var(--salla-primary-color) !important;
+  background: var(--salla-light-mode-secondary-color) !important;
+}
+
+.notification-banner.title {
+  color: var(--salla-primary-color);
+}
+
+.icon_color_primary-50 > svg > path {
+  fill: var(--salla-primary-color) !important;
+}
