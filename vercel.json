@@ -1,7 +1,7 @@
 {
   "headers": [
     {
-      "source": "/(.*)",
+      "source": "/embed/(.*)",
       "headers": [
         {
           "key": "X-Frame-Options",
@@ -9,10 +9,9 @@
         },
         {
           "key": "Content-Security-Policy",
-          "value": "frame-ancestors https://*.salla.sa https://salla.sa 'self';"
+          "value": "frame-ancestors https://*.salla.sa https://salla.sa;"
         }
       ]
     }
   ]
 }
-
