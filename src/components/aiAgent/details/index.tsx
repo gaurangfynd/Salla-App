@@ -1254,7 +1254,7 @@ export default function AiAgentDetails() {
                 onClick={() => setShowSecondItem(!showSecondItem)}
                 className="inline-flex cursor-pointer items-center gap-2 rounded-xl transition border border-[var(--salla-secondary-color)] text-[var(--salla-secondary-color)]"
               >
-                <p className="text-xs py-2 font-medium p-2 text-[var(--salla-secondary-color)] ">
+                <p className="text-xs py-2 font-medium p-2 text-[var(--salla-primary-color)] ">
                   {showSecondItem ? "Hide Agent" : "Test Agent"}
                 </p>
               </button>
@@ -1268,7 +1268,7 @@ export default function AiAgentDetails() {
                     <p className="text-xs font-medium text-[var(--salla-primary-color)]">
                       Enable app on your store
                     </p>
-                    <span className="rounded-full border border-[var(--salla-secondary-color)] p-3 py-1 text-xs font-semibold text-[var(--salla-secondary-color)]">
+                    <span className="rounded-full border border-[var(--salla-secondary-color)] p-3 py-1 text-xs font-semibold text-[var(--salla-primary-color)]">
                       Off
                     </span>
                   </div>
@@ -2069,7 +2069,7 @@ export default function AiAgentDetails() {
                     <h3 className="text-base font-semibold text-[var(--salla-primary-color)]">
                       {planName}
                     </h3>
-                    <span className="rounded-full border border-[var(--salla-secondary-color)] px-2 py-0.5 !text-xs font-medium text-[var(--salla-secondary-color)]">
+                    <span className="rounded-full border border-[var(--salla-secondary-color)] px-2 py-0.5 !text-xs font-medium text-[var(--salla-primary-color)]">
                       Active
                     </span>
                   </div>
@@ -2176,7 +2176,7 @@ export default function AiAgentDetails() {
                 <button
                   type="button"
                   onClick={() => setShowMore(!showMore)}
-                  className="cursor-pointer inline-flex items-center rounded-lg px-3 py-2 !text-xs font-medium !text-[var(--salla-secondary-color)] transition border border-[var(--salla-secondary-color)]"
+                  className="cursor-pointer inline-flex items-center rounded-lg px-3 py-2 !text-xs font-medium !text-[var(--salla-primary-color)] transition border border-[var(--salla-secondary-color)]"
                 >
                   {showMore ? "Show less" : "Show more"}
                 </button>
