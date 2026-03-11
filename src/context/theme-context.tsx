@@ -29,10 +29,19 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   // 1) Read theme from query param once on mount
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const qpTheme = params.get("theme"); // e.g. ?theme=dark
 
+    // Prefer explicit theme param if provided, e.g. ?theme=dark
+    const qpTheme = params.get("theme");
     if (isTheme(qpTheme)) {
       setTheme(qpTheme);
+      return;
+    }
+
+    // Fallback to Salla convention: ?dark=true
+    const qpDark = params.get("dark");
+    if (qpDark === "true") {
+      setTheme("dark");
+      return;
     }
   }, []);
 
