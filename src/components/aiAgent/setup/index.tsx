@@ -11,6 +11,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../index.less";
 import "./index.css";
+import { set } from "react-hook-form";
 
 const AIAgentSetup = () => {
   const navigate = useNavigate();
@@ -92,6 +93,9 @@ const AIAgentSetup = () => {
       // const applicationData = companyApplicationData?.find(
       //     (val: any) => val?._id === applicationId,
       // );
+      setTimeout(() => {
+        navigate(`/details`);
+      }, 4000);
     }
   }, []);
 

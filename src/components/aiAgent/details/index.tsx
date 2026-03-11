@@ -1029,7 +1029,7 @@ export default function AiAgentDetails() {
 
   //   const loading = ["loading", "submitting"].includes(settingsFetcher.state);
 
-  const selectedThemeId = "";
+  const [selectedThemeId, setSelectedThemeId] = useState<string>("");
   //draftCopilot?.configuration?.appearance?.themeId || "";
 
   const templateOptions = useMemo(() => {
@@ -1217,7 +1217,7 @@ export default function AiAgentDetails() {
 
                   <button
                     type="button"
-                    className="absolute -bottom-2 right-1  flex  items-center gap-2 rounded-lg bg-gray-200 px-2 py-1 text-xs font-medium text-[var(--salla-primary-color)] shadow-sm transition hover:text-white"
+                    className="absolute -bottom-2 right-1  flex  items-center gap-2 rounded-lg bg-gray-200 px-2 py-1 text-xs font-medium text-[var(--salla-primary-color)]   transition hover:text-white cursor-pointer"
                     // onClick={() => !iconUploading && triggerIconPicker()}
                     disabled={iconUploading}
                   >
@@ -1252,23 +1252,23 @@ export default function AiAgentDetails() {
               {/* Toggle right action */}
               <button
                 onClick={() => setShowSecondItem(!showSecondItem)}
-                className="inline-flex items-center gap-2 rounded-xl border border-gray-200  shadow-sm transition bg-[var(--salla-secondary-color)]"
+                className="inline-flex cursor-pointer items-center gap-2 rounded-xl transition border border-[var(--salla-secondary-color)] text-[var(--salla-secondary-color)]"
               >
-                <p className="text-xs py-2.5 font-medium p-2 text-[var(--salla-light-mode-primary-color)] ">
+                <p className="text-xs py-2 font-medium p-2 text-[var(--salla-secondary-color)] ">
                   {showSecondItem ? "Hide Agent" : "Test Agent"}
                 </p>
               </button>
             </div>
 
             {/* Enable app card */}
-            <div className="rounded-2xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] p-5 shadow-sm mb-5">
+            <div className="rounded-2xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-5 py-2   mb-5">
               <div className="flex items-center justify-between gap-4">
                 <div className="flex items-center gap-3 justify-center align-center">
                   <div className="flex items-center gap-3">
                     <p className="text-xs font-medium text-[var(--salla-primary-color)]">
                       Enable app on your store
                     </p>
-                    <span className="rounded-full bg-[var(--salla-secondary-color)] p-3 py-1 text-xs font-semibold text-[var(--salla-light-mode-primary-color)]">
+                    <span className="rounded-full border border-[var(--salla-secondary-color)] p-3 py-1 text-xs font-semibold text-[var(--salla-secondary-color)]">
                       Off
                     </span>
                   </div>
@@ -1276,10 +1276,10 @@ export default function AiAgentDetails() {
 
                 <button
                   type="button"
-                  className="rounded-xl  px-3 py-2.5 shadow-sm transition bg-[var(--salla-secondary-color)]"
+                  className="cursor-pointer rounded-xl  px-3 py-1.5   transition bg-[var(--salla-secondary-color)]"
                   //   onClick={() => onToggleEmbed(!embedEnabled)}
                 >
-                  <span className="text-xs font-semibold text-[var(--salla-light-mode-primary-color)] ">
+                  <span className="text-xs font-medium text-[var(--salla-light-mode-primary-color)] ">
                     Turn On
                   </span>
                 </button>
@@ -1287,7 +1287,7 @@ export default function AiAgentDetails() {
             </div>
 
             {/* Main form card */}
-            <div className="rounded-2xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] p-6 shadow-sm">
+            <div className="rounded-2xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] p-6  ">
               <div className="space-y-6">
                 {/* Row 1: agent name + model */}
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2 mb-2">
@@ -1298,7 +1298,7 @@ export default function AiAgentDetails() {
                     </label>
                     <input
                       type="text"
-                      className="w-full rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-2 text-xs !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)] shadow-sm outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]"
+                      className="w-full rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-2 text-xs !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)]   outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]"
                       placeholder="Enter AI agent name"
                       value={draftCopilot?.name || ""}
                       onInput={(e) => {
@@ -1330,7 +1330,7 @@ export default function AiAgentDetails() {
                     <label className="text-xs font-medium text-[var(--salla-primary-color)]">
                       AI model
                     </label>
-                    <select className="w-full rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-1 !text-xs !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)] shadow-sm outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]">
+                    <select className="w-full rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-1 !text-xs !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)]   outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]">
                       <option value="gpt-3.5-turbo">
                         OpenAI GPT-3.5 Turbo (1 credit/message)
                       </option>
@@ -1422,7 +1422,7 @@ export default function AiAgentDetails() {
                     <label className="text-xs font-medium text-[var(--salla-primary-color)]">
                       Tone
                     </label>
-                    <select className="w-full rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-1 !text-xs !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)] shadow-sm outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]">
+                    <select className="w-full rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-1 !text-xs !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)]   outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]">
                       <option value="professional">Professional</option>
                       <option value="sassy">Sassy</option>
                       <option value="empathetic">Empathetic</option>
@@ -1448,7 +1448,7 @@ export default function AiAgentDetails() {
 
                   <textarea
                     rows={6}
-                    className="w-full rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-2 text-xs !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)] shadow-sm outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]"
+                    className="w-full rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-2 text-xs !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)]   outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]"
                     placeholder="**Role:** You are an E-commerce Shopping Assistant..."
                   />
                 </div>
@@ -1465,9 +1465,9 @@ export default function AiAgentDetails() {
                       <button
                         type="button"
                         onClick={() => setActiveTab("template")}
-                        className={`rounded-lg px-3 py-1.5  transition ${
+                        className={`cursor-pointer rounded-lg px-3 py-1.5  transition ${
                           activeTab === "template"
-                            ? "bg-[var(--salla-secondary-color)] text-[var(--salla-primary-color)] shadow-sm"
+                            ? "bg-[var(--salla-secondary-color)] text-[var(--salla-primary-color)]  "
                             : "!text-[var(--salla-secondary-font-color)]"
                         }`}
                       >
@@ -1476,9 +1476,9 @@ export default function AiAgentDetails() {
                       <button
                         type="button"
                         onClick={() => setActiveTab("customize")}
-                        className={`rounded-lg px-3 py-1.5 text-xs font-medium transition ${
+                        className={`cursor-pointer rounded-lg px-3 py-1.5 text-xs font-medium transition ${
                           activeTab === "customize"
-                            ? "bg-[var(--salla-secondary-color)] text-[var(--salla-primary-color)] shadow-sm"
+                            ? "bg-[var(--salla-secondary-color)] text-[var(--salla-primary-color)]  "
                             : "!text-[var(--salla-secondary-font-color)]"
                         }`}
                       >
@@ -1498,6 +1498,7 @@ export default function AiAgentDetails() {
                             type="button"
                             onClick={() => {
                               const theme = THEMES[t.themeId];
+                              setSelectedThemeId(t.themeId);
                               updateDraft(
                                 ["configuration", "appearance", "themeId"],
                                 t.themeId,
@@ -1515,10 +1516,10 @@ export default function AiAgentDetails() {
                                 },
                               );
                             }}
-                            className={`rounded-xl p-1.5 transition ${
+                            className={`cursor-pointer rounded-xl p-0.5 transition ${
                               selected
-                                ? "ring-2 ring-gray-900"
-                                : "ring-1 ring-transparent hover:ring-gray-200"
+                                ? "ring-1 ring-[var(--salla-secondary-color)]"
+                                : "ring-1 ring-transparent hover:ring-[var(--salla-border-color)]"
                             }`}
                             title={t.themeId}
                           >
@@ -1930,7 +1931,7 @@ export default function AiAgentDetails() {
                             Font
                           </label>
                           <select
-                            className="w-full appearance-none rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-2 text-xs !text-[var(--salla-primary-color)] shadow-sm outline-none transition focus:border-[var(--salla-secondary-color)]  focus:ring-[var(--salla-secondary-color)]"
+                            className="w-full appearance-none rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-2 text-xs !text-[var(--salla-primary-color)]   outline-none transition focus:border-[var(--salla-secondary-color)]  focus:ring-[var(--salla-secondary-color)]"
                             value={
                               draftCopilot?.configuration?.appearance?.font
                                 ?.family || ""
@@ -2061,14 +2062,14 @@ export default function AiAgentDetails() {
             </div>
 
             {/* Plan card (matches screenshot’s lower card vibe) */}
-            <div className="rounded-2xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] p-6 shadow-sm">
+            <div className="rounded-2xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] p-6  ">
               <div className="flex items-start justify-between gap-4">
-                <div>
+                <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-2">
                     <h3 className="text-base font-semibold text-[var(--salla-primary-color)]">
                       {planName}
                     </h3>
-                    <span className="rounded-full bg-[var(--salla-secondary-color)] px-2 py-0.5 text-xs font-semibold text-[var(--salla-light-mode-primary-color)]">
+                    <span className="rounded-full border border-[var(--salla-secondary-color)] px-2 py-0.5 !text-xs font-medium text-[var(--salla-secondary-color)]">
                       Active
                     </span>
                   </div>
@@ -2079,7 +2080,7 @@ export default function AiAgentDetails() {
 
                 <button
                   type="button"
-                  className="rounded-xl bg-[var(--salla-secondary-color)] px-4 py-2  font-semibold text-white shadow-sm transition hover:bg-gray-800"
+                  className="cursor-pointer rounded-xl bg-[var(--salla-secondary-color)] px-4 py-2  font-semibold text-white"
                   onClick={handleUpgrade}
                 >
                   <span className="text-xs font-medium text-[var(--salla-light-mode-primary-color)] ">
@@ -2102,9 +2103,9 @@ export default function AiAgentDetails() {
                       </p>
                     </div>
 
-                    <div className="mt-2 h-2 w-full rounded-md bg-[var(--salla-secondary-font-color)]">
+                    <div className="mt-2 h-2 w-full rounded-md border border-[var(--salla-border-color)] bg-[var(--salla-background-color)]">
                       <div
-                        className="h-2 rounded-md bg-[var(--salla-secondary-color)] transition-[width] duration-300"
+                        className="h-2 rounded-md border border-[var(--salla-border-color)] bg-[var(--salla-secondary-color)] transition-[width] duration-300"
                         style={{ width: `${appPercent}%` }}
                       />
                     </div>
@@ -2121,9 +2122,9 @@ export default function AiAgentDetails() {
                       </p>
                     </div>
 
-                    <div className="mt-2 h-2 w-full rounded-md bg-[var(--salla-secondary-font-color)]">
+                    <div className="mt-2 h-2 w-full rounded-md border border-[var(--salla-border-color)] bg-[var(--salla-background-color)]">
                       <div
-                        className="h-2 rounded-md bg-[var(--salla-secondary-color)] transition-[width] duration-300"
+                        className="h-2 rounded-md border border-[var(--salla-border-color)] bg-[var(--salla-secondary-color)] transition-[width] duration-300"
                         style={{ width: `${qPercent}%` }}
                       />
                     </div>
@@ -2143,9 +2144,9 @@ export default function AiAgentDetails() {
                         </p>
                       </div>
 
-                      <div className="mt-2 h-2 w-full rounded-md bg-[var(--salla-secondary-font-color)]">
+                      <div className="mt-2 h-2 w-full rounded-md border border-[var(--salla-border-color)] bg-[var(--salla-background-color)]">
                         <div
-                          className="h-2 rounded-md bg-[var(--salla-secondary-color)] transition-[width] duration-300"
+                          className="h-2 rounded-md border border-[var(--salla-border-color)] bg-[var(--salla-secondary-color)] transition-[width] duration-300"
                           style={{ width: `${dssyPercent}%` }}
                         />
                       </div>
@@ -2162,9 +2163,9 @@ export default function AiAgentDetails() {
                         </p>
                       </div>
 
-                      <div className="mt-2 h-2 w-full rounded-md bg-[var(--salla-secondary-font-color)]">
+                      <div className="mt-2 h-2 w-full rounded-md border border-[var(--salla-border-color)] bg-[var(--salla-background-color)]">
                         <div
-                          className="h-2 rounded-md bg-[var(--salla-secondary-color)] transition-[width] duration-300"
+                          className="h-2 rounded-md border border-[var(--salla-border-color)] bg-[var(--salla-secondary-color)] transition-[width] duration-300"
                           style={{ width: `${dsPercent}%` }}
                         />
                       </div>
@@ -2175,7 +2176,7 @@ export default function AiAgentDetails() {
                 <button
                   type="button"
                   onClick={() => setShowMore(!showMore)}
-                  className="inline-flex items-center rounded-lg px-3 py-2 text-xs font-medium text-[var(--salla-light-mode-primary-color)] transition bg-[var(--salla-secondary-color)]"
+                  className="cursor-pointer inline-flex items-center rounded-lg px-3 py-2 !text-xs font-medium !text-[var(--salla-secondary-color)] transition border border-[var(--salla-secondary-color)]"
                 >
                   {showMore ? "Show less" : "Show more"}
                 </button>
@@ -2186,9 +2187,9 @@ export default function AiAgentDetails() {
           {/* RIGHT COLUMN (Agent panel) */}
           {showSecondItem && (
             <aside className="hidden lg:block">
-              <div className="sticky top-4 h-[calc(100vh-2rem)] overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+              <div className="sticky top-4 h-[calc(100vh-2rem)] overflow-hidden rounded-2xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)]  ">
                 <div className="flex h-full flex-col">
-                  <div className="border-b border-gray-200 px-4 py-3">
+                  <div className="border-b border-[var(--salla-border-color)] px-4 py-3">
                     <p className="text-xs font-semibold text-[var(--salla-primary-color)]">
                       Agent
                     </p>
@@ -2198,8 +2199,8 @@ export default function AiAgentDetails() {
                     id="copilot-container"
                     className="flex flex-1 flex-col items-center justify-center gap-2 px-6 text-center"
                   >
-                    <div className="h-10 w-10 animate-spin rounded-full border-2 border-gray-200 border-t-gray-900" />
-                    <div className="text-xs font-medium text-gray-700">
+                    <div className="h-10 w-10 animate-spin rounded-full border-2 border-[var(--salla-border-color)] border-t-[var(--salla-primary-color)]" />
+                    <div className="text-xs font-medium !text-[var(--salla-secondary-font-color)]">
                       Loading your AI Agent
                     </div>
                   </div>

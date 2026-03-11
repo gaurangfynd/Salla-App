@@ -13,8 +13,9 @@ function App() {
     <ThemeProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<AiAgentDetails />} />
+          <Route path="/" element={<AIAgent />} />
           <Route path="/setup" element={<AIAgentSetup />} />
+          <Route path="/details" element={<AiAgentDetails />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
