@@ -1,5 +1,4 @@
 import React from "react";
-import { FDSSpinner } from "..";
 import SVGLoader from "../svgLoader";
 import "./index.less";
 interface IStep {
@@ -21,11 +20,12 @@ const Stepper = ({ steps = [] }: IStepper) => {
                     <div key={index} className="stepper__step" data-testid="stepper__step">
                         <div className="stepper__step-left">
                             {loading && (
-                                <FDSSpinner
+                                <div
                                     className="stepper__step-spinner"
                                     data-testid="stepper__step-spinner"
-                                    size="m"
-                                />
+                                >
+                                    <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-[var(--salla-primary-color)] border-t-transparent" />
+                                </div>
                             )}
                             {completed && !loading && (
                                 <SVGLoader
