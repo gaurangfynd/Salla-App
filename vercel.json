@@ -1,7 +1,13 @@
 {
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/"
+    }
+  ],
   "headers": [
     {
-      "source": "/embed/(.*)",
+      "source": "/embedded/(.*)",
       "headers": [
         {
           "key": "X-Frame-Options",

@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import AIAgent from "./components/aiAgent";
 import AIAgentSetup from "./components/aiAgent/setup";
 import "./common/styles/main.less";
@@ -38,6 +36,7 @@ function App() {
           <Route path="/" element={<AIAgent />} />
           <Route path="/setup" element={<AIAgentSetup />} />
           <Route path="/details" element={<AiAgentDetails />} />
+          <Route path="*" element={<AIAgent />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
