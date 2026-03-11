@@ -6,11 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { openWindow } from "../../utils/browser";
 import "./index.less";
 
-import { embedded } from "@salla.sa/embedded-sdk";
-import { useRef, useEffect } from "react";
-
 function AIAgent() {
-  const initialized = useRef(false);
+
   const navigate = useNavigate();
   const [isReadyForSetup, setIsReadyForSetup] = useState(false);
   const [hasMapping, setHasMapping] = useState<boolean | null>(null);
@@ -22,24 +19,6 @@ function AIAgent() {
     aiAgentLimit?: number;
     aiAgentCount?: number;
   } | null>(null);
-
-  useEffect(() => {
-    if (initialized.current) return;
-    initialized.current = true;
-
-    async function init() {
-      try {
-        await embedded.init({ debug: true });
-        embedded.page.setTitle("Store Registration");
-        embedded.ready();
-        console.log("embedded initialized");
-      } catch (err) {
-        console.error(err);
-      }
-    }
-
-    init();
-  }, []);
 
   const handleCheckPricing = useCallback(() => {
     openWindow(
