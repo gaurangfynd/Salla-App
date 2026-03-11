@@ -1,8 +1,6 @@
-// @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
-
 @font-face {
   font-family: "PingARLT";
-  src: url("../../../public/fonts/PingARLT-Regular.woff2") format("woff2");
+  src: url("/fonts/PingARLT-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -10,7 +8,7 @@
 
 @font-face {
   font-family: "PingARLT";
-  src: url("../../../public/fonts/PingARLT-Medium.woff2") format("woff2");
+  src: url("/fonts/PingARLT-Medium.woff2") format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -18,7 +16,7 @@
 
 @font-face {
   font-family: "PingARLT";
-  src: url("../../../public/fonts/PingARLT-Bold.woff2") format("woff2");
+  src: url("/fonts/PingARLT-Bold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -613,7 +611,7 @@
 
 html,
 body {
-  font-family: "PingARLT";
+  font-family: "PingARLT" !important;
   font-size: 16px;
   box-sizing: border-box;
   margin: 0;
@@ -640,99 +638,99 @@ html {
 @dimensions: 0, 1, 2, 4, 6, 8, 12, 16, 20, 24, 32, 40, 48, 64;
 
 // Utility function to generate padding classes
-each(@dimensions, {
-    .p-@{value} {
-        padding: ~"var(--fds-dimensions-@{value})";
-    }
+// each(@dimensions, {
+//     .p-@{value} {
+//         padding: ~"var(--fds-dimensions-@{value})";
+//     }
 
-    .px-@{value} {
-        padding-left: ~"var(--fds-dimensions-@{value})";
-        padding-right: ~"var(--fds-dimensions-@{value})";
-    }
+//     .px-@{value} {
+//         padding-left: ~"var(--fds-dimensions-@{value})";
+//         padding-right: ~"var(--fds-dimensions-@{value})";
+//     }
 
-    .py-@{value} {
-        padding-top: ~"var(--fds-dimensions-@{value})";
-        padding-bottom: ~"var(--fds-dimensions-@{value})";
-    }
+//     .py-@{value} {
+//         padding-top: ~"var(--fds-dimensions-@{value})";
+//         padding-bottom: ~"var(--fds-dimensions-@{value})";
+//     }
 
-    .pt-@{value} {
-        padding-top: ~"var(--fds-dimensions-@{value})";
-    }
+//     .pt-@{value} {
+//         padding-top: ~"var(--fds-dimensions-@{value})";
+//     }
 
-    .pr-@{value} {
-        padding-right: ~"var(--fds-dimensions-@{value})";
-    }
+//     .pr-@{value} {
+//         padding-right: ~"var(--fds-dimensions-@{value})";
+//     }
 
-    .pb-@{value} {
-        padding-bottom: ~"var(--fds-dimensions-@{value})";
-    }
+//     .pb-@{value} {
+//         padding-bottom: ~"var(--fds-dimensions-@{value})";
+//     }
 
-    .pl-@{value} {
-        padding-left: ~"var(--fds-dimensions-@{value})";
-    }
-});
+//     .pl-@{value} {
+//         padding-left: ~"var(--fds-dimensions-@{value})";
+//     }
+// });
 
 // Utility function to generate margin classes
-each(@dimensions, {
-    .m-@{value} {
-        margin: ~"var(--fds-dimensions-@{value})";
-    }
+// each(@dimensions, {
+//     .m-@{value} {
+//         margin: ~"var(--fds-dimensions-@{value})";
+//     }
 
-    .mx-@{value} {
-        margin-left: ~"var(--fds-dimensions-@{value})";
-        margin-right: ~"var(--fds-dimensions-@{value})";
-    }
+//     .mx-@{value} {
+//         margin-left: ~"var(--fds-dimensions-@{value})";
+//         margin-right: ~"var(--fds-dimensions-@{value})";
+//     }
 
-    .my-@{value} {
-        margin-top: ~"var(--fds-dimensions-@{value})";
-        margin-bottom: ~"var(--fds-dimensions-@{value})";
-    }
+//     .my-@{value} {
+//         margin-top: ~"var(--fds-dimensions-@{value})";
+//         margin-bottom: ~"var(--fds-dimensions-@{value})";
+//     }
 
-    .mt-@{value} {
-        margin-top: ~"var(--fds-dimensions-@{value})";
-    }
+//     .mt-@{value} {
+//         margin-top: ~"var(--fds-dimensions-@{value})";
+//     }
 
-    .mr-@{value} {
-        margin-right: ~"var(--fds-dimensions-@{value})";
-    }
+//     .mr-@{value} {
+//         margin-right: ~"var(--fds-dimensions-@{value})";
+//     }
 
-    .mb-@{value} {
-        margin-bottom: ~"var(--fds-dimensions-@{value})";
-    }
+//     .mb-@{value} {
+//         margin-bottom: ~"var(--fds-dimensions-@{value})";
+//     }
 
-    .ml-@{value} {
-        margin-left: ~"var(--fds-dimensions-@{value})";
-    }
-});
+//     .ml-@{value} {
+//         margin-left: ~"var(--fds-dimensions-@{value})";
+//     }
+// });
 
 // Utility function to generate gap classes
-each(@dimensions, {
-    .gap-@{value} {
-        gap: ~"var(--fds-dimensions-@{value})";
-    }
+// each(@dimensions, {
+//     .gap-@{value} {
+//         gap: ~"var(--fds-dimensions-@{value})";
+//     }
 
-    .gap-x-@{value} {
-        column-gap: ~"var(--fds-dimensions-@{value})";
-    }
+//     .gap-x-@{value} {
+//         column-gap: ~"var(--fds-dimensions-@{value})";
+//     }
 
-    .gap-y-@{value} {
-        row-gap: ~"var(--fds-dimensions-@{value})";
-    }
-});
+//     .gap-y-@{value} {
+//         row-gap: ~"var(--fds-dimensions-@{value})";
+//     }
+// });
 
 // Utility function to generate width classes
-each(@dimensions, {
-    .w-@{value} {
-        width: ~"var(--fds-dimensions-@{value})";
-    }
-});
+// each(@dimensions, {
+//     .w-@{value} {
+//         width: ~"var(--fds-dimensions-@{value})";
+//     }
+// });
 
 // Utility function to generate height classes
-each(@dimensions, {
-    .h-@{value} {
-        height: ~"var(--fds-dimensions-@{value})";
-    }
-});
+// each(@dimensions, {
+//     .h-@{value} {
+//         height: ~"var(--fds-dimensions-@{value})";
+//     }
+// });
 
 // Full width and height utilities
 .w-full {
