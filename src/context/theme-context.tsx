@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { embedded } from "@salla.sa/embedded-sdk";
 
 type Theme = "light" | "dark";
 
@@ -35,7 +36,31 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     }
   }, []);
 
-  // 2) Apply theme to <html data-theme="...">
+  // 2) Listen to Salla embedded theme changes (if running inside Salla)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const anyEmbedded = embedded as any;
+    const handler = (payload: any) => {
+      const nextTheme: string | null =
+        typeof payload === "string" ? payload : payload?.theme ?? null;
+
+      if (isTheme(nextTheme)) {
+        setTheme(nextTheme);
+      }
+    };
+
+    if (typeof anyEmbedded?.onThemeChange === "function") {
+      const unsubscribe = anyEmbedded.onThemeChange(handler);
+      return () => {
+        if (typeof unsubscribe === "function") {
+          unsubscribe();
+        }
+      };
+    }
+  }, []);
+
+  // 3) Apply theme to <html data-theme="...">
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);

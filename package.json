@@ -11,14 +11,14 @@
   },
   "dependencies": {
     "@pixelbin/core": "^7.0.0",
+    "@salla.sa/embedded-sdk": "^0.2.3",
     "@tailwindcss/vite": "^4.2.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.51.1",
     "react-redux": "^9.1.0",
     "react-router-dom": "^7.13.1",
-    "react-test-renderer": "18.2.0",
-    "@salla.sa/embedded-sdk": "^0.2.3"
+    "react-test-renderer": "18.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
