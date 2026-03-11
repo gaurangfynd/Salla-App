@@ -1,10 +1,3 @@
-import {
-  FDSDivider,
-  FDSIcon,
-  FDSNotificationBanner,
-  FDSTypography,
-  useNotifications,
-} from "../../../common";
 import Stepper from "../../../common/stepper";
 import SVGLoader from "../../../common/svgLoader";
 import { useEffect, useMemo, useState } from "react";
@@ -123,37 +116,26 @@ const AIAgentSetup = () => {
                 src="ic_rocket"
               />
               <div className="ai-agent__body__card__header-content">
-                <FDSTypography
-                  type="h1"
-                  variant="heading-2xl"
-                  className="ai-agent__body__card__header__content-title"
-                >
+                <h1 className="ai-agent__body__card__header__content-title">
                   Setting up Your AI Agent
-                </FDSTypography>
-                <FDSTypography
-                  type="p"
-                  variant="body-xl"
-                  className="ai-agent__body__card__header__content-description"
-                >
+                </h1>
+                <p className="ai-agent__body__card__header__content-description">
                   Your AI Agent is being automatically configured to understand
                   your business context and assist customers effectively.
-                </FDSTypography>
+                </p>
               </div>
             </div>
           </div>
-          <FDSDivider withLabel={false} />
+          <hr className="border-[var(--salla-border-color)]" />
 
           <div className="ai-agent__body__card__body">
             <Stepper steps={steps} />
           </div>
-          {/* <FDSDivider withLabel={false} />
+          {/* <hr />
           <div className="ai-agent__body__card__footer">
-            <FDSNotificationBanner
-              type="suggestion"
-              appearance="default"
-              closeIcon={false}
-              title="Note: You’ll be auto-redirected to next screen once setup is complete. This may take upto 1 minute."
-            />
+            <p className="ai-agent__body__card__footer-note">
+              Note: You'll be auto-redirected to next screen once setup is complete. This may take upto 1 minute.
+            </p>
           </div> */}
         </div>
       </section>

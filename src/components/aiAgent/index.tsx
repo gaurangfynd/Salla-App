@@ -1,17 +1,10 @@
 import SVGLoader from "../../common/svgLoader";
 import { aiProviders, benefits, channels } from "../../constants/aiAgent";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { openWindow } from "../../utils/browser";
 import "./index.less";
-import {
-  FDSButton,
-  FDSDivider,
-  FDSIcon,
-  FDSNotificationBanner,
-  FDSTypography,
-} from "../../common/index";
 
 function AIAgent() {
   const navigate = useNavigate();
@@ -92,31 +85,22 @@ function AIAgent() {
                 src="ic_rocket"
               />
               <div className="ai-agent__body__card__header__content">
-                <FDSTypography
-                  variant="heading-2xl"
-                  type="h2"
-                  className="ai-agent__body__card__header__content-title"
-                >
+                <h2 className="ai-agent__body__card__header__content-title text-2xl font-semibold">
                   Create an AI Agent with Kaily!
-                </FDSTypography>
-                <FDSTypography
-                  type="p"
-                  variant="body-l"
-                  className="ai-agent__body__card__header__content-description"
-                >
+                </h2>
+                <p className="ai-agent__body__card__header__content-description text-sm text-gray-600">
                   Set up your AI-powered assistant in just one click and unlock
                   24/7 support, personalized shopping experiences, and more
-                </FDSTypography>
+                </p>
               </div>
-              <FDSButton
-                type="primary"
-                size="s"
-                className="ai-agent__body__card__header-button"
+              <button
+                type="button"
+                className="cursor-pointer ai-agent__body__card__header-button inline-flex items-center justify-center rounded-lg bg-[var(--salla-secondary-color)] px-4 py-2 text-xs font-medium text-[var(--salla-light-mode-primary-color)] shadow-sm hover:bg-gray-800 transition"
                 data-testid="setup-button"
                 onClick={handleSetupRedirection}
               >
                 Setup in 1 click
-              </FDSButton>
+              </button>
             </div>
             <div className="ai-agent__body__card__header-right">
               <SVGLoader
@@ -125,7 +109,7 @@ function AIAgent() {
               />
             </div>
           </div>
-          <FDSDivider withLabel={false} />
+          <hr className="my-4 border-[var(--salla-border-color)]" />
           {/* {notificationConfig?.description && (
                         <FDSNotificationBanner
                             type="suggestion"
@@ -139,18 +123,30 @@ function AIAgent() {
                         />
                     )} */}
           {hasUsage === false && hasMapping === true && (
-            <FDSNotificationBanner
-              type="suggestion"
-              appearance="warning"
-              closeIcon={false}
-              title={`AI Agent Limit Reached`}
-              description={`You've reached the maximum number of AI Agents allowed on your ${mappingData?.planName} plan.\n\nYou've built ${mappingData?.aiAgentCount ?? 0} out of ${mappingData?.aiAgentLimit ?? "-"} available AI Agents.Upgrade your plan to unlock more AI Agents for your website.`}
-              primaryButtonText="Upgrade"
-              secondaryButtonText="Manage"
-              onSecondaryButtonClick={handleManage}
-              onPrimaryButtonClick={handleCheckPricing}
-              showButtons={true}
-            />
+            <div className="ai-agent__notification-banner ai-agent__notification-banner--warning rounded-lg border border-yellow-300 bg-yellow-50 p-4 text-sm text-yellow-900">
+              <h3 className="ai-agent__notification-banner-title mb-1 font-semibold">
+                AI Agent Limit Reached
+              </h3>
+              <p className="ai-agent__notification-banner-description mb-3 whitespace-pre-line">
+                {`You've reached the maximum number of AI Agents allowed on your ${mappingData?.planName} plan.\n\nYou've built ${mappingData?.aiAgentCount ?? 0} out of ${mappingData?.aiAgentLimit ?? "-"} available AI Agents.Upgrade your plan to unlock more AI Agents for your website.`}
+              </p>
+              <div className="ai-agent__notification-banner-actions flex gap-2">
+                <button
+                  type="button"
+                  className="cursor-pointer ai-agent__notification-banner-button ai-agent__notification-banner-button--primary inline-flex items-center justify-center rounded-md bg-[var(--salla-secondary-color)] px-3 py-1.5 text-xs font-medium text-[var(--salla-light-mode-primary-color)] shadow-sm hover:bg-gray-800 transition"
+                  onClick={handleCheckPricing}
+                >
+                  Upgrade
+                </button>
+                <button
+                  type="button"
+                  className="cursor-pointer ai-agent__notification-banner-button ai-agent__notification-banner-button--secondary inline-flex items-center justify-center rounded-md border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-800 hover:bg-gray-50 transition"
+                  onClick={handleManage}
+                >
+                  Manage
+                </button>
+              </div>
+            </div>
           )}
           {/* <div className="ai-agent__body__card__body">
                         <div className="ai-agent__body__card__body-icon">
@@ -190,43 +186,29 @@ function AIAgent() {
           {/* <FDSDivider withLabel={false} /> */}
           <div className="ai-agent__body__card__body__connections">
             <div className="ai-agent__body__card__body__integrations">
-              <FDSTypography
-                type="h3"
-                variant="heading-m"
-                className="ai-agent__body__card__body__section-title"
-              >
+              <h3 className="ai-agent__body__card__body__section-title text-base font-semibold">
                 Deploy on Multiple Channels
-              </FDSTypography>
+              </h3>
               <div className="ai-agent__body__card__body__integrations-icons">
                 {channels?.map((channel) => (
                   <div key={channel?.id} className="flex gap-8 items-center">
                     <SVGLoader src={channel?.icon} />
-                    <FDSTypography
-                      type="p"
-                      variant="body-m-prominent"
-                      className="ai-agent__body__card__body__icon-title"
-                    >
+                    <p className="ai-agent__body__card__body__icon-title text-sm font-medium text-gray-800">
                       {channel?.name}
-                    </FDSTypography>
+                    </p>
                   </div>
                 ))}
               </div>
             </div>
 
-            <FDSDivider
-              orientation="vertical"
-              withLabel={false}
-              lineType="normal"
-              className="ai-agent__body__card__body__connections-divider"
+            <div
+              role="separator"
+              className="ai-agent__body__card__body__connections-divider w-px bg-gray-200"
             />
             <div className="ai-agent__body__card__body__integrations">
-              <FDSTypography
-                type="h3"
-                variant="heading-m"
-                className="ai-agent__body__card__body__section-title"
-              >
+              <h3 className="ai-agent__body__card__body__section-title text-base font-semibold">
                 Powered by top AI providers
-              </FDSTypography>
+              </h3>
               <div className="ai-agent__body__card__body__integrations-icons">
                 {aiProviders?.map((integration) => (
                   <div
@@ -239,74 +221,57 @@ function AIAgent() {
                         src={`/images/svgs/${String(integration?.icon)}.svg`}
                       />
                     </div>
-                    <FDSTypography
-                      type="p"
-                      variant="body-m-prominent"
-                      className="ai-agent__body__card__body__icon-title"
-                    >
+                    <p className="ai-agent__body__card__body__icon-title text-sm font-medium text-gray-800">
                       {integration?.name}
-                    </FDSTypography>
+                    </p>
                   </div>
                 ))}
               </div>
             </div>
           </div>
-          <FDSDivider withLabel={false} />
+          <hr className="my-4 border-[var(--salla-border-color)]" />
 
           <div className="ai-agent__body__card__body__benefits">
-            <FDSTypography
-              type="h3"
-              variant="heading-m"
-              className="ai-agent__body__card__body__section-title"
-            >
+            <h3 className="ai-agent__body__card__body__section-title text-base font-semibold">
               Benefits of using AI Agent
-            </FDSTypography>
+            </h3>
             <div className="ai-agent__body__card__body__benefits__items">
               {benefits.map((benefit) => (
                 <div
                   key={benefit.id}
                   className="ai-agent__body__card__body__benefit"
                 >
-                  <FDSIcon
-                    name={benefit?.icon}
-                    color="neutral"
-                    size="m"
-                    className="ai-agent-body-icons"
-                  />
+                  <span
+                    className="ai-agent-body-icons inline-flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600"
+                    aria-hidden="true"
+                  >
+                    {/* icon placeholder */}
+                  </span>
                   <div className="ai-agent__body__card__body__benefit-content">
-                    <FDSTypography
-                      type="h4"
-                      variant="heading-m"
-                      className="ai-agent__body__card__body-info-title"
-                    >
+                    <h4 className="ai-agent__body__card__body-info-title text-sm font-semibold">
                       {benefit.title}
-                    </FDSTypography>
-                    <FDSTypography
-                      type="p"
-                      variant="body-m"
-                      className="ai-agent__body__card__body-info-subtitle"
-                    >
+                    </h4>
+                    <p className="ai-agent__body__card__body-info-subtitle text-sm text-gray-600">
                       {benefit.subtitle}
-                    </FDSTypography>
+                    </p>
                   </div>
                 </div>
               ))}
             </div>
           </div>
-          <FDSDivider withLabel={false} />
+          <hr className="my-4 border-[var(--salla-border-color)]" />
           <div className="ai-agent__body__card__body__redirect">
             Visit
-            <FDSButton
-              className="ai-agent__body__card__body-info-button"
-              type="tertiary"
-              size="m"
+            <button
+              type="button"
+              className="cursor-pointer ai-agent__body__card__body-info-button inline-flex items-center justify-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-xs font-medium text-gray-800 shadow-sm hover:bg-gray-50 transition"
               data-testid="footer-check-pricing-button"
               onClick={handleCheckPricing}
             >
               <div className="flex flex-item gap-8 check-pricing-btn">
                 Check Pricing
               </div>
-            </FDSButton>
+            </button>
             to know more.
             <SVGLoader
               src="ic_open_with"

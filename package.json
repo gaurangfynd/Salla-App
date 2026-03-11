@@ -12,7 +12,6 @@
   "dependencies": {
     "@pixelbin/core": "^7.0.0",
     "@tailwindcss/vite": "^4.2.1",
-    "novus": "git+ssh://git@ssh.dev.azure.com:v3/GoFynd/FyndDesignSystem/fds-web#0.0.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.51.1",
