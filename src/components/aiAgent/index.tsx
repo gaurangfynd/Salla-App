@@ -32,6 +32,7 @@ function AIAgent() {
         await embedded.init({ debug: true });
         embedded.page.setTitle("Store Registration");
         embedded.ready();
+        console.log("embedded initialized");
       } catch (err) {
         console.error(err);
       }
