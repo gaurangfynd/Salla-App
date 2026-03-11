@@ -30,7 +30,7 @@ function App() {
 
     init();
   }, []);
-  console.log("initialized", initialized.current);
+  console.log("initialized details", initialized.current);
   return (
     <ThemeProvider>
       <BrowserRouter>
