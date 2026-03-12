@@ -21,7 +21,6 @@ async function introspectToken(token: string, appId: string | null) {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token, appId }),
     },
-    { token },
   );
   const data = await res.json();
   console.log("data from introspect api", data);
@@ -61,8 +60,7 @@ async function fetchSallaStoreInfo(token: string) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token }),
-    },
-    { token }, // storeId unknown at this point (this call gives us the storeId)
+    }
   );
   const data = await res.json();
   console.log("salla user info", data);
