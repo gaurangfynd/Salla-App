@@ -66,7 +66,11 @@ async function fetchSallaStoreInfo(token: string) {
   );
   const data = await res.json();
   console.log("salla user info", data);
-  return data?.success && data?.data ? data.data : null;
+  if (!data?.success || !data?.data?.data) return null;
+  return {
+    ...data.data.data,
+    activeAdminStoreUser: data.data.activeAdminStoreUser ?? null,
+  };
 }
 
 function App() {

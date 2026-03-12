@@ -101,9 +101,9 @@ function AIAgent() {
       navigate("/setup"); // show stepper immediately while creation runs
 
       const result = await createSallaAgent({
-        ownerFirstName: sallaStoreInfo.name?.split(" ")[0] || "",
-        ownerLastName: sallaStoreInfo.name?.split(" ")[1] || "Salla",
-        ownerEmail: sallaStoreInfo.email,
+        ownerFirstName: sallaStoreInfo.activeAdminStoreUser.name?.split(" ")[0] || "",
+        ownerLastName: sallaStoreInfo.activeAdminStoreUser.name?.split(" ")[1] || "Salla",
+        ownerEmail: sallaStoreInfo.activeAdminStoreUser.email,
         sallaStoreId: merchantId,
         aiAgentName: sallaStoreInfo.merchant.name,
         active: true,

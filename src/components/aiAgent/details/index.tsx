@@ -912,7 +912,7 @@ export default function AiAgentDetails() {
       await updateCopilot(
         {
           merchantId,
-          ownerEmail: sallaStoreInfo.email,
+          ownerEmail: sallaStoreInfo.activeAdminStoreUser.email,
           data: payloadToSend,
         },
         token ?? "",
@@ -1017,6 +1017,17 @@ export default function AiAgentDetails() {
 
   const [iconPreviewUrl, setIconPreviewUrl] = useState<string>(""); // local blob url
   const [pendingIconCdnPath, setPendingIconCdnPath] = useState<string>(""); // cdn_path to send on save
+  const [embedEnabled, setEmbedEnabled] = useState<boolean>(
+    Boolean(existingData?.isEnableAppEmbed)
+  );
+
+  useEffect(() => {
+    setEmbedEnabled(Boolean(existingData?.isEnableAppEmbed));
+  }, [existingData?.isEnableAppEmbed]);
+
+  const onToggleEmbed = (checked: boolean) => {
+    window.open(existingData?.appEmbedUrl, '_blank');
+  };
 
   const triggerIconPicker = () => {
     const el = document.getElementById(
@@ -1331,21 +1342,38 @@ export default function AiAgentDetails() {
                     <p className="text-sm font-medium text-[var(--salla-primary-color)]">
                       Enable app on your store
                     </p>
-                    <span className="rounded-full border border-[var(--salla-secondary-color)] p-3 py-0.5 text-xs font-semibold text-[var(--salla-primary-color)]">
-                      Off
-                    </span>
+                    {embedEnabled ? (
+                      <></>
+                    ) : (
+                      <span className="rounded-full border border-[var(--salla-secondary-color)] p-3 py-0.5 text-xs font-semibold text-[var(--salla-primary-color)]">
+                        Off
+                      </span>
+                    )}
                   </div>
                 </div>
+                {embedEnabled ?
+                  (
+                    <button
+                      type="button"
+                      className="cursor-pointer rounded-xl  px-3 py-1.5   transition border border-[var(--salla-secondary-color)]"
+                    >
+                      <span className="text-sm font-medium text-[var(--salla-secondary-color)] ">
+                        Enabled
+                      </span>
+                    </button>)
+                  :
+                  (
+                    <button
+                      type="button"
+                      className="cursor-pointer rounded-xl  px-3 py-1.5   transition bg-[var(--salla-secondary-color)]"
+                      onClick={() => onToggleEmbed(!embedEnabled)}
+                    >
+                      <span className="text-sm font-medium text-[var(--salla-light-mode-primary-color)] ">
+                        Turn On
+                      </span>
+                    </button>
 
-                <button
-                  type="button"
-                  className="cursor-pointer rounded-xl  px-3 py-1.5   transition bg-[var(--salla-secondary-color)]"
-                //   onClick={() => onToggleEmbed(!embedEnabled)}
-                >
-                  <span className="text-sm font-medium text-[var(--salla-light-mode-primary-color)] ">
-                    Turn On
-                  </span>
-                </button>
+                  )}
               </div>
             </div>
 

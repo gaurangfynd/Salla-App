@@ -29,6 +29,18 @@ type SallaMerchant = {
   };
 };
 
+type ActiveAdminStoreUser = {
+  id: number;
+  name: string;
+  mobile: string;
+  mobile_code: string;
+  email: string;
+  avatar: string;
+  role: string;
+  status: string;
+  enabled: number;
+};
+
 type SallaStoreInfo = {
   id: number;
   name: string;
@@ -44,6 +56,7 @@ type SallaStoreInfo = {
     scope: string;
     exp: number;
   };
+  activeAdminStoreUser: ActiveAdminStoreUser;
 };
 
 type SallaAppData = {
