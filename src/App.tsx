@@ -87,7 +87,7 @@ function App() {
     async function init() {
       try {
         // 1) Establish connection with Salla Dashboard
-        await embedded.init({ debug: true });
+        // await embedded.init({ debug: true });
 
         // 2) Try to get the short-lived session token from Salla
         const tokenValue = embedded.auth.getToken() || token;
@@ -97,37 +97,37 @@ function App() {
         }
 
         // 3) Send token to backend for verification / session creation
-     //   const introspectData = await introspectToken(tokenValue, appId);
-        embedded.ready();
-        // if (introspectData.success) {
-        //   embedded.ready();
-        //   setMerchantId(introspectData.data.data.merchant_id);
+        const introspectData = await introspectToken(tokenValue, appId);
+        
+        if (introspectData.success) {
+          embedded.ready();
+          setMerchantId(introspectData.data.data.merchant_id);
 
-        //   // 4) Fetch and store Salla store/user info
-        //   const storeInfo = await fetchSallaStoreInfo(tokenValue);
-        //   if (storeInfo) {
-        //     setSallaStoreInfo(storeInfo);
-        //     console.log("salla store info set", storeInfo);
+          // 4) Fetch and store Salla store/user info
+          const storeInfo = await fetchSallaStoreInfo(tokenValue);
+          if (storeInfo) {
+            setSallaStoreInfo(storeInfo);
+            console.log("salla store info set", storeInfo);
 
-        //     const merchantId = introspectData.data.data.merchant_id;
-        //     const ownerEmail = storeInfo.email;
+            const merchantId = introspectData.data.data.merchant_id;
+            const ownerEmail = storeInfo.email;
 
-        //     // 5) Check if merchant can create a new bot
-        //     const canCreate = await fetchCanCreateAgent(merchantId, ownerEmail, tokenValue);
-        //     setAbleToCreateBot(canCreate);
-        //     console.log("ableToCreateBot", canCreate);
+            // 5) Check if merchant can create a new bot
+            const canCreate = await fetchCanCreateAgent(merchantId, ownerEmail, tokenValue);
+            setAbleToCreateBot(canCreate);
+            console.log("ableToCreateBot", canCreate);
 
-        //     // 6) Fetch app data (copilot token etc.)
-        //     const app = await fetchAppData(merchantId, ownerEmail, tokenValue);
-        //     if (app) setAppData(app);
+            // 6) Fetch app data (copilot token etc.)
+            const app = await fetchAppData(merchantId, ownerEmail, tokenValue);
+            if (app) setAppData(app);
 
-        //     // 7) Fetch usage data
-        //     const usage = await fetchUsageData(merchantId, ownerEmail, tokenValue);
-        //     if (usage) setUsageData(usage);
-        //   }
-        // } else {
-        //   console.error("Failed to initialize embedded", introspectData.message);
-        // }
+            // 7) Fetch usage data
+            const usage = await fetchUsageData(merchantId, ownerEmail, tokenValue);
+            if (usage) setUsageData(usage);
+          }
+        } else {
+          console.error("Failed to initialize embedded", introspectData.message);
+        }
       } catch (err) {
         console.error(err);
       }
