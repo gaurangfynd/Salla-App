@@ -131,12 +131,12 @@ const AIAgentSetup = () => {
           <div className="ai-agent__body__card__body">
             <Stepper steps={steps} />
           </div>
-          {/* <hr />
+          <hr  className="border-[var(--salla-border-color)]"/>
           <div className="ai-agent__body__card__footer">
-            <p className="ai-agent__body__card__footer-note">
+            <p className="ai-agent__body__card__footer-note text-sm text-[var(--salla-secondary-font-color)]">
               Note: You'll be auto-redirected to next screen once setup is complete. This may take upto 1 minute.
             </p>
-          </div> */}
+          </div>
         </div>
       </section>
     </main>

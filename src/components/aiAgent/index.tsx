@@ -96,7 +96,7 @@ function AIAgent() {
               </div>
               <button
                 type="button"
-                className="cursor-pointer ai-agent__body__card__header-button inline-flex items-center justify-center rounded-lg bg-[var(--salla-secondary-color)] px-4 py-2 text-xs font-medium text-[var(--salla-light-mode-primary-color)] shadow-sm hover:bg-gray-800 transition"
+                className="cursor-pointer ai-agent__body__card__header-button inline-flex items-center justify-center rounded-lg bg-[var(--salla-secondary-color)] px-4 py-2 text-sm font-medium text-[var(--salla-light-mode-primary-color)] shadow-sm hover:bg-gray-800 transition"
                 data-testid="setup-button"
                 onClick={handleSetupRedirection}
               >
@@ -134,14 +134,14 @@ function AIAgent() {
               <div className="ai-agent__notification-banner-actions flex gap-2">
                 <button
                   type="button"
-                  className="cursor-pointer ai-agent__notification-banner-button ai-agent__notification-banner-button--primary inline-flex items-center justify-center rounded-md bg-[var(--salla-secondary-color)] px-3 py-1.5 text-xs font-medium text-[var(--salla-light-mode-primary-color)] shadow-sm hover:bg-gray-800 transition"
+                  className="cursor-pointer ai-agent__notification-banner-button ai-agent__notification-banner-button--primary inline-flex items-center justify-center rounded-md bg-[var(--salla-secondary-color)] px-3 py-1.5 text-sm font-medium text-[var(--salla-light-mode-primary-color)] shadow-sm hover:bg-gray-800 transition"
                   onClick={handleCheckPricing}
                 >
                   Upgrade
                 </button>
                 <button
                   type="button"
-                  className="cursor-pointer ai-agent__notification-banner-button ai-agent__notification-banner-button--secondary inline-flex items-center justify-center rounded-md border border-gray-200 bg-white px-3 py-1.5 text-xs font-medium text-gray-800 hover:bg-gray-50 transition"
+                  className="cursor-pointer ai-agent__notification-banner-button ai-agent__notification-banner-button--secondary inline-flex items-center justify-center rounded-md border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-800 hover:bg-gray-50 transition"
                   onClick={handleManage}
                 >
                   Manage
@@ -242,12 +242,9 @@ function AIAgent() {
                   key={benefit.id}
                   className="ai-agent__body__card__body__benefit"
                 >
-                  <span
-                    className="ai-agent-body-icons inline-flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-gray-600"
-                    aria-hidden="true"
-                  >
-                    {/* icon placeholder */}
-                  </span>
+                  
+             <SVGLoader src={benefit?.icon} className="ai-agent-body-icons"/>
+                  
                   <div className="ai-agent__body__card__body__benefit-content">
                     <h4 className="ai-agent__body__card__body-info-title text-sm font-semibold">
                       {benefit.title}
@@ -263,16 +260,15 @@ function AIAgent() {
           <hr className="my-4 border-[var(--salla-border-color)]" />
           <div className="ai-agent__body__card__body__redirect">
             Visit
-            <button
-              type="button"
-              className="cursor-pointer ai-agent__body__card__body-info-button inline-flex items-center justify-center rounded-lg border border-gray-200 bg-white px-4 py-2 text-xs font-medium text-gray-800 shadow-sm hover:bg-gray-50 transition"
+            <a
+              href="https://www.kaily.ai/pricing?utm_source=fynd-commerce&utm_medium=boltic&utm_campaign=ai-agent-setup&utm_content=check-pricing"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="cursor-pointer ai-agent__body__card__body-info-button text-sm font-medium text-[var(--salla-primary-color)] underline hover:opacity-80 transition"
               data-testid="footer-check-pricing-button"
-              onClick={handleCheckPricing}
             >
-              <div className="flex flex-item gap-8 check-pricing-btn">
-                Check Pricing
-              </div>
-            </button>
+              Check Pricing
+            </a>
             to know more.
             <SVGLoader
               src="ic_open_with"

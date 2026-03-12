@@ -1219,14 +1219,14 @@ export default function AiAgentDetails() {
 
                   <button
                     type="button"
-                    className="absolute -bottom-2 right-1  flex  items-center gap-2 rounded-lg bg-gray-200 px-2 py-1 text-xs font-medium text-[var(--salla-primary-color)]   transition hover:text-white cursor-pointer"
+                    className="absolute -bottom-2 right-1  flex  items-center gap-2 rounded-lg bg-gray-200 px-2 py-1 text-sm font-medium text-[var(--salla-primary-color)]   transition hover:text-white cursor-pointer"
                     // onClick={() => !iconUploading && triggerIconPicker()}
                     disabled={iconUploading}
                   >
                     {iconUploading ? (
                       <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-black" />
                     ) : (
-                      <span className="text-xs leading-none">⬆</span>
+                      <span className="text-sm leading-none">⬆</span>
                     )}
                   </button>
 
@@ -1245,7 +1245,7 @@ export default function AiAgentDetails() {
                     {existingData?.data?.copilot?.name || "Gaurang"}{" "}
                     <span className="align-middle">👋🏻</span>
                   </h2>
-                  <p className="mt-1 text-xs text-[var(--salla-secondary-font-color)]">
+                  <p className="mt-1 text-sm text-[var(--salla-secondary-font-color)]">
                     Welcome back to Kaily
                   </p>
                 </div>
@@ -1256,7 +1256,7 @@ export default function AiAgentDetails() {
                 onClick={() => setShowSecondItem(!showSecondItem)}
                 className="inline-flex cursor-pointer items-center gap-2 rounded-xl transition border border-[var(--salla-secondary-color)] text-[var(--salla-secondary-color)]"
               >
-                <p className="text-xs py-2 font-medium p-2 text-[var(--salla-primary-color)] ">
+                <p className="text-sm py-2 font-medium p-2 text-[var(--salla-primary-color)] ">
                   {showSecondItem ? "Hide Agent" : "Test Agent"}
                 </p>
               </button>
@@ -1267,10 +1267,10 @@ export default function AiAgentDetails() {
               <div className="flex items-center justify-between gap-4">
                 <div className="flex items-center gap-3 justify-center align-center">
                   <div className="flex items-center gap-3">
-                    <p className="text-xs font-medium text-[var(--salla-primary-color)]">
+                    <p className="text-sm font-medium text-[var(--salla-primary-color)]">
                       Enable app on your store
                     </p>
-                    <span className="rounded-full border border-[var(--salla-secondary-color)] p-3 py-1 text-xs font-semibold text-[var(--salla-primary-color)]">
+                    <span className="rounded-full border border-[var(--salla-secondary-color)] p-3 py-1 text-sm font-semibold text-[var(--salla-primary-color)]">
                       Off
                     </span>
                   </div>
@@ -1281,7 +1281,7 @@ export default function AiAgentDetails() {
                   className="cursor-pointer rounded-xl  px-3 py-1.5   transition bg-[var(--salla-secondary-color)]"
                   //   onClick={() => onToggleEmbed(!embedEnabled)}
                 >
-                  <span className="text-xs font-medium text-[var(--salla-light-mode-primary-color)] ">
+                  <span className="text-sm font-medium text-[var(--salla-light-mode-primary-color)] ">
                     Turn On
                   </span>
                 </button>
@@ -1295,12 +1295,12 @@ export default function AiAgentDetails() {
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2 mb-2">
                   {/* AI agent name */}
                   <div className="flex flex-col gap-2">
-                    <label className="text-xs font-medium text-[var(--salla-primary-color)]">
+                    <label className="text-sm font-medium text-[var(--salla-primary-color)]">
                       AI agent name
                     </label>
                     <input
                       type="text"
-                      className="w-full rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-2 text-xs !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)]   outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]"
+                      className="w-full rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-2 text-sm !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)]   outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]"
                       placeholder="Enter AI agent name"
                       value={draftCopilot?.name || ""}
                       onInput={(e) => {
@@ -1321,7 +1321,7 @@ export default function AiAgentDetails() {
                       }}
                     />
                     {!!nameError && (
-                      <p className="text-xs font-medium text-red-600">
+                      <p className="text-sm font-medium text-red-600">
                         {nameError}
                       </p>
                     )}
@@ -1329,10 +1329,10 @@ export default function AiAgentDetails() {
 
                   {/* AI model */}
                   <div className="flex flex-col gap-2">
-                    <label className="text-xs font-medium text-[var(--salla-primary-color)]">
+                    <label className="text-sm font-medium text-[var(--salla-primary-color)]">
                       AI model
                     </label>
-                    <select className="w-full rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-1 !text-xs !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)]   outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]">
+                    <select className="w-full rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-1 !text-sm !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)]   outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]">
                       <option value="gpt-3.5-turbo">
                         OpenAI GPT-3.5 Turbo (1 credit/message)
                       </option>
@@ -1421,10 +1421,10 @@ export default function AiAgentDetails() {
                 {/* Row 2: tone */}
                 <div className="grid grid-cols-1 gap-5 md:grid-cols-2 mb-2">
                   <div className="flex flex-col gap-2">
-                    <label className="text-xs font-medium text-[var(--salla-primary-color)]">
+                    <label className="text-sm font-medium text-[var(--salla-primary-color)]">
                       Tone
                     </label>
-                    <select className="w-full rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-1 !text-xs !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)]   outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]">
+                    <select className="w-full rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-1 !text-sm !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)]   outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]">
                       <option value="professional">Professional</option>
                       <option value="sassy">Sassy</option>
                       <option value="empathetic">Empathetic</option>
@@ -1439,10 +1439,10 @@ export default function AiAgentDetails() {
                 {/* Persona */}
                 <div className="space-y-2 mb-1">
                   <div className="flex items-center justify-between">
-                    <label className="text-xs font-medium text-[var(--salla-primary-color)]">
+                    <label className="text-sm font-medium text-[var(--salla-primary-color)]">
                       Persona
                     </label>
-                    <span className="text-xs text-[var(--salla-secondary-font-color)]">
+                    <span className="text-sm text-[var(--salla-secondary-font-color)]">
                       Note: Your AI Agent will act according to these
                       guidelines.
                     </span>
@@ -1450,7 +1450,7 @@ export default function AiAgentDetails() {
 
                   <textarea
                     rows={6}
-                    className="w-full rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-2 text-xs !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)]   outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]"
+                    className="w-full rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-2 text-sm !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)]   outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]"
                     placeholder="**Role:** You are an E-commerce Shopping Assistant..."
                   />
                 </div>
@@ -1458,7 +1458,7 @@ export default function AiAgentDetails() {
                 {/* Appearance */}
                 <div className="space-y-3">
                   <div className="flex items-center justify-between mb-1">
-                    <h3 className="text-xs font-semibold text-[var(--salla-primary-color)]">
+                    <h3 className="text-sm font-semibold text-[var(--salla-primary-color)]">
                       Appearance
                     </h3>
 
@@ -1469,22 +1469,22 @@ export default function AiAgentDetails() {
                         onClick={() => setActiveTab("template")}
                         className={`cursor-pointer rounded-lg px-3 py-1.5  transition ${
                           activeTab === "template"
-                            ? "bg-[var(--salla-secondary-color)] text-[var(--salla-primary-color)]  "
+                            ? "bg-[var(--salla-secondary-color)] text-[var(--salla-light-mode-primary-color)]  "
                             : "!text-[var(--salla-secondary-font-color)]"
                         }`}
                       >
-                        <p className="text-xs font-medium">Predefined</p>
+                        <p className="text-sm font-medium">Predefined</p>
                       </button>
                       <button
                         type="button"
                         onClick={() => setActiveTab("customize")}
-                        className={`cursor-pointer rounded-lg px-3 py-1.5 text-xs font-medium transition ${
+                        className={`cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium transition ${
                           activeTab === "customize"
-                            ? "bg-[var(--salla-secondary-color)] text-[var(--salla-primary-color)]  "
+                            ? "bg-[var(--salla-secondary-color)] text-[var(--salla-light-mode-primary-color)]  "
                             : "!text-[var(--salla-secondary-font-color)]"
                         }`}
                       >
-                        <p className="text-xs font-medium">Custom</p>
+                        <p className="text-sm font-medium">Custom</p>
                       </button>
                     </div>
                   </div>
@@ -1540,7 +1540,7 @@ export default function AiAgentDetails() {
                     <div className="space-y-4">
                       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <div className="space-y-2 flex flex-col">
-                          <label className="text-xs font-medium text-[var(--salla-primary-color)] mb-1">
+                          <label className="text-sm font-medium text-[var(--salla-primary-color)] mb-1">
                             Layout background
                           </label>
                           <div className="flex items-center gap-2 rounded-md border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] p-1 w-full max-w-xs">
@@ -1573,12 +1573,12 @@ export default function AiAgentDetails() {
                                   ?.layoutBackground || "#ffffff"
                               }
                               readOnly
-                              className="w-full bg-transparent text-xs !text-[var(--salla-secondary-font-color)] outline-none"
+                              className="w-full bg-transparent text-sm !text-[var(--salla-secondary-font-color)] outline-none"
                             />
                           </div>
                         </div>
                         <div className="space-y-2 flex flex-col">
-                          <label className="text-xs font-medium text-[var(--salla-primary-color)] mb-1">
+                          <label className="text-sm font-medium text-[var(--salla-primary-color)] mb-1">
                             Minimized background
                           </label>
                           <div className="flex items-center gap-2 rounded-md border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] p-1 w-full max-w-xs">
@@ -1611,7 +1611,7 @@ export default function AiAgentDetails() {
                                   ?.minimizedBackgroundColor || "#ffffff"
                               }
                               readOnly
-                              className="w-full bg-transparent text-xs !text-[var(--salla-secondary-font-color)] outline-none"
+                              className="w-full bg-transparent text-sm !text-[var(--salla-secondary-font-color)] outline-none"
                             />
                           </div>
                         </div>
@@ -1619,7 +1619,7 @@ export default function AiAgentDetails() {
 
                       <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
                         <div className="space-y-2 flex flex-col">
-                          <label className="text-xs font-medium text-[var(--salla-primary-color)] mb-1">
+                          <label className="text-sm font-medium text-[var(--salla-primary-color)] mb-1">
                             Input background
                           </label>
                           <div className="flex items-center gap-2 rounded-md border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] p-1 w-full max-w-xs">
@@ -1652,12 +1652,12 @@ export default function AiAgentDetails() {
                                   ?.inputBackground || "#ffffff"
                               }
                               readOnly
-                              className="w-full bg-transparent text-xs !text-[var(--salla-secondary-font-color)] outline-none"
+                              className="w-full bg-transparent text-sm !text-[var(--salla-secondary-font-color)] outline-none"
                             />
                           </div>
                         </div>
                         <div className="space-y-2 flex flex-col">
-                          <label className="text-xs font-medium text-[var(--salla-primary-color)] mb-1">
+                          <label className="text-sm font-medium text-[var(--salla-primary-color)] mb-1">
                             Input font
                           </label>
                           <div className="flex items-center gap-2 rounded-md border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] p-1 w-full max-w-xs">
@@ -1690,12 +1690,12 @@ export default function AiAgentDetails() {
                                   ?.inputFontColor || "#ffffff"
                               }
                               readOnly
-                              className="w-full bg-transparent text-xs !text-[var(--salla-secondary-font-color)] outline-none"
+                              className="w-full bg-transparent text-sm !text-[var(--salla-secondary-font-color)] outline-none"
                             />
                           </div>
                         </div>
                         <div className="space-y-2 flex flex-col">
-                          <label className="text-xs font-medium text-[var(--salla-primary-color)] mb-1">
+                          <label className="text-sm font-medium text-[var(--salla-primary-color)] mb-1">
                             Primary Button
                           </label>
                           <div className="flex items-center gap-2 rounded-md border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] p-1 w-full max-w-xs">
@@ -1728,12 +1728,12 @@ export default function AiAgentDetails() {
                                   ?.primaryButton || "#ffffff"
                               }
                               readOnly
-                              className="w-full bg-transparent text-xs !text-[var(--salla-secondary-font-color)] outline-none"
+                              className="w-full bg-transparent text-sm !text-[var(--salla-secondary-font-color)] outline-none"
                             />
                           </div>
                         </div>
                         <div className="space-y-2 flex flex-col">
-                          <label className="text-xs font-medium text-[var(--salla-primary-color)] mb-1">
+                          <label className="text-sm font-medium text-[var(--salla-primary-color)] mb-1">
                             Border/stroke
                           </label>
                           <div className="flex items-center gap-2 rounded-md border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] p-1 w-full max-w-xs">
@@ -1766,7 +1766,7 @@ export default function AiAgentDetails() {
                                   ?.borderColor || "#ffffff"
                               }
                               readOnly
-                              className="w-full bg-transparent text-xs !text-[var(--salla-secondary-font-color)] outline-none"
+                              className="w-full bg-transparent text-sm !text-[var(--salla-secondary-font-color)] outline-none"
                             />
                           </div>
                         </div>
@@ -1774,7 +1774,7 @@ export default function AiAgentDetails() {
 
                       <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
                         <div className="space-y-2 flex flex-col">
-                          <label className="text-xs font-medium text-[var(--salla-primary-color)] mb-1">
+                          <label className="text-sm font-medium text-[var(--salla-primary-color)] mb-1">
                             Agent reply bg
                           </label>
                           <div className="flex items-center gap-2 rounded-md border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] p-1 w-full max-w-xs">
@@ -1807,12 +1807,12 @@ export default function AiAgentDetails() {
                                   ?.copilotReplyBackground || "#ffffff"
                               }
                               readOnly
-                              className="w-full bg-transparent text-xs !text-[var(--salla-secondary-font-color)] outline-none"
+                              className="w-full bg-transparent text-sm !text-[var(--salla-secondary-font-color)] outline-none"
                             />
                           </div>
                         </div>
                         <div className="space-y-2 flex flex-col">
-                          <label className="text-xs font-medium text-[var(--salla-primary-color)] mb-1">
+                          <label className="text-sm font-medium text-[var(--salla-primary-color)] mb-1">
                             Agent font color
                           </label>
                           <div className="flex items-center gap-2 rounded-md border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] p-1 w-full max-w-xs">
@@ -1845,12 +1845,12 @@ export default function AiAgentDetails() {
                                   ?.copilotFontColor || "#ffffff"
                               }
                               readOnly
-                              className="w-full bg-transparent text-xs !text-[var(--salla-secondary-font-color)] outline-none"
+                              className="w-full bg-transparent text-sm !text-[var(--salla-secondary-font-color)] outline-none"
                             />
                           </div>
                         </div>
                         <div className="space-y-2 flex flex-col">
-                          <label className="text-xs font-medium text-[var(--salla-primary-color)] mb-1">
+                          <label className="text-sm font-medium text-[var(--salla-primary-color)] mb-1">
                             User reply bg
                           </label>
                           <div className="flex items-center gap-2 rounded-md border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] p-1 w-full max-w-xs">
@@ -1883,12 +1883,12 @@ export default function AiAgentDetails() {
                                   ?.userReplyBackground || "#ffffff"
                               }
                               readOnly
-                              className="w-full bg-transparent text-xs !text-[var(--salla-secondary-font-color)] outline-none"
+                              className="w-full bg-transparent text-sm !text-[var(--salla-secondary-font-color)] outline-none"
                             />
                           </div>
                         </div>
                         <div className="space-y-2 flex flex-col">
-                          <label className="text-xs font-medium text-[var(--salla-primary-color)] mb-1">
+                          <label className="text-sm font-medium text-[var(--salla-primary-color)] mb-1">
                             User font
                           </label>
                           <div className="flex items-center gap-2 rounded-md border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] p-1 w-full max-w-xs">
@@ -1921,7 +1921,7 @@ export default function AiAgentDetails() {
                                   ?.userFontColor || "#ffffff"
                               }
                               readOnly
-                              className="w-full bg-transparent text-xs !text-[var(--salla-secondary-font-color)] outline-none"
+                              className="w-full bg-transparent text-sm !text-[var(--salla-secondary-font-color)] outline-none"
                             />
                           </div>
                         </div>
@@ -1929,11 +1929,11 @@ export default function AiAgentDetails() {
 
                       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                         <div className="space-y-2 flex flex-col">
-                          <label className="text-xs font-medium text-[var(--salla-primary-color)] mb-1">
+                          <label className="text-sm font-medium text-[var(--salla-primary-color)] mb-1">
                             Font
                           </label>
                           <select
-                            className="w-full appearance-none rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-2 text-xs !text-[var(--salla-primary-color)]   outline-none transition focus:border-[var(--salla-secondary-color)]  focus:ring-[var(--salla-secondary-color)]"
+                            className="w-full appearance-none rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-2 text-sm !text-[var(--salla-primary-color)]   outline-none transition focus:border-[var(--salla-secondary-color)]  focus:ring-[var(--salla-secondary-color)]"
                             value={
                               draftCopilot?.configuration?.appearance?.font
                                 ?.family || ""
@@ -2071,11 +2071,11 @@ export default function AiAgentDetails() {
                     <h3 className="text-base font-semibold text-[var(--salla-primary-color)]">
                       {planName}
                     </h3>
-                    <span className="rounded-full border border-[var(--salla-secondary-color)] px-2 py-0.5 !text-xs font-medium text-[var(--salla-primary-color)]">
+                    <span className="rounded-full border border-[var(--salla-secondary-color)] px-2 py-0.5 !text-sm font-medium text-[var(--salla-primary-color)]">
                       Active
                     </span>
                   </div>
-                  <p className="mt-1 text-xs text-[var(--salla-secondary-font-color)]">
+                  <p className="mt-1 text-sm text-[var(--salla-secondary-font-color)]">
                     Expires on {formattedDate}
                   </p>
                 </div>
@@ -2085,7 +2085,7 @@ export default function AiAgentDetails() {
                   className="cursor-pointer rounded-xl bg-[var(--salla-secondary-color)] px-4 py-2  font-semibold text-white"
                   onClick={handleUpgrade}
                 >
-                  <span className="text-xs font-medium text-[var(--salla-light-mode-primary-color)] ">
+                  <span className="text-sm font-medium text-[var(--salla-light-mode-primary-color)] ">
                     Upgrade Now
                   </span>
                 </button>
@@ -2097,10 +2097,10 @@ export default function AiAgentDetails() {
                   {/* AI Agents allowed */}
                   <div>
                     <div className="flex items-center justify-between">
-                      <p className="text-xs text-[var(--salla-secondary-font-color)]">
+                      <p className="text-sm text-[var(--salla-secondary-font-color)]">
                         AI Agents allowed
                       </p>
-                      <p className="text-xs font-semibold text-[var(--salla-secondary-font-color)]">
+                      <p className="text-sm font-semibold text-[var(--salla-secondary-font-color)]">
                         {appUsed} / {appTotal}
                       </p>
                     </div>
@@ -2116,10 +2116,10 @@ export default function AiAgentDetails() {
                   {/* Message credits left */}
                   <div>
                     <div className="flex items-center justify-between">
-                      <p className="text-xs text-[var(--salla-secondary-font-color)]">
+                      <p className="text-sm text-[var(--salla-secondary-font-color)]">
                         Message credits left
                       </p>
-                      <p className="text-xs font-semibold text-[var(--salla-secondary-font-color)]">
+                      <p className="text-sm font-semibold text-[var(--salla-secondary-font-color)]">
                         {qUsed} / {qTotal}
                       </p>
                     </div>
@@ -2138,10 +2138,10 @@ export default function AiAgentDetails() {
                     {/* Training characters left */}
                     <div>
                       <div className="flex items-center justify-between">
-                        <p className="text-xs text-[var(--salla-secondary-font-color)]">
+                        <p className="text-sm text-[var(--salla-secondary-font-color)]">
                           Training characters left
                         </p>
-                        <p className="text-xs font-semibold text-[var(--salla-secondary-font-color)]">
+                        <p className="text-sm font-semibold text-[var(--salla-secondary-font-color)]">
                           {dssyUsed} / {dssyTotal}
                         </p>
                       </div>
@@ -2157,10 +2157,10 @@ export default function AiAgentDetails() {
                     {/* Data sources */}
                     <div>
                       <div className="flex items-center justify-between">
-                        <p className="text-xs text-[var(--salla-secondary-font-color)]">
+                        <p className="text-sm text-[var(--salla-secondary-font-color)]">
                           Data sources
                         </p>
-                        <p className="text-xs font-semibold text-[var(--salla-secondary-font-color)]">
+                        <p className="text-sm font-semibold text-[var(--salla-secondary-font-color)]">
                           {dsUsed} / {dsTotal}
                         </p>
                       </div>
@@ -2178,7 +2178,7 @@ export default function AiAgentDetails() {
                 <button
                   type="button"
                   onClick={() => setShowMore(!showMore)}
-                  className="cursor-pointer inline-flex items-center rounded-lg px-3 py-2 !text-xs font-medium !text-[var(--salla-primary-color)] transition border border-[var(--salla-secondary-color)]"
+                  className="cursor-pointer inline-flex items-center rounded-lg px-3 py-2 !text-sm font-medium !text-[var(--salla-primary-color)] transition border border-[var(--salla-secondary-color)]"
                 >
                   {showMore ? "Show less" : "Show more"}
                 </button>
@@ -2192,7 +2192,7 @@ export default function AiAgentDetails() {
               <div className="sticky top-4 h-[calc(100vh-2rem)] overflow-hidden rounded-2xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)]  ">
                 <div className="flex h-full flex-col">
                   <div className="border-b border-[var(--salla-border-color)] px-4 py-3">
-                    <p className="text-xs font-semibold text-[var(--salla-primary-color)]">
+                    <p className="text-sm font-semibold text-[var(--salla-primary-color)]">
                       Agent
                     </p>
                   </div>
@@ -2202,7 +2202,7 @@ export default function AiAgentDetails() {
                     className="flex flex-1 flex-col items-center justify-center gap-2 px-6 text-center"
                   >
                     <div className="h-10 w-10 animate-spin rounded-full border-2 border-[var(--salla-border-color)] border-t-[var(--salla-primary-color)]" />
-                    <div className="text-xs font-medium !text-[var(--salla-secondary-font-color)]">
+                    <div className="text-sm font-medium !text-[var(--salla-secondary-font-color)]">
                       Loading your AI Agent
                     </div>
                   </div>

@@ -1,10 +1,60 @@
 import React, { createContext, useContext, useState } from "react";
 
+type SallaMerchant = {
+  id: number;
+  username: string;
+  name: string;
+  avatar: string;
+  store_location: string | null;
+  plan: string;
+  status: string;
+  type: string;
+  domain: string;
+  tax_number: string | null;
+  commercial_number: string | null;
+  from_competitor: boolean;
+  currency: string;
+  kyc_country: string;
+  created_at: string;
+  subscription: {
+    status: string;
+    end_date: string;
+    is_launched: boolean;
+    renew: boolean;
+    days_left: number | null;
+  };
+  referral: {
+    code: string;
+    url: string;
+  };
+};
+
+type SallaStoreInfo = {
+  id: number;
+  name: string;
+  email: string;
+  mobile: string;
+  role: string;
+  language: string;
+  password_reset_required: number;
+  created_at: string;
+  merchant: SallaMerchant;
+  context: {
+    app: number;
+    scope: string;
+    exp: number;
+  };
+};
+
 type SallaContextValue = {
   locale: string | null;
   token: string | null;
   appId: string | null;
   dark: boolean;
+  merchantId: number | null;
+  setMerchantId: (id: number) => void;
+  sallaStoreInfo: SallaStoreInfo | null;
+  setSallaStoreInfo: (info: SallaStoreInfo) => void;
 };
 
 const SallaContext = createContext<SallaContextValue | undefined>(undefined);
@@ -21,7 +71,9 @@ type SallaProviderProps = {
   children: React.ReactNode;
 };
 
-const parseSallaParams = (): SallaContextValue => {
+type SallaParams = Omit<SallaContextValue, "merchantId" | "setMerchantId">;
+
+const parseSallaParams = (): SallaParams => {
   if (typeof window === "undefined") {
     return { locale: null, token: null, appId: null, dark: false };
   }
@@ -37,10 +89,14 @@ const parseSallaParams = (): SallaContextValue => {
 export const SallaProvider: React.FC<SallaProviderProps> = ({ children }) => {
   // Lazy initializer: runs synchronously before first render, so all values
   // are available immediately when child components read the context.
-  const [state] = useState<SallaContextValue>(parseSallaParams);
+  const [params] = useState<SallaParams>(parseSallaParams);
+  const [merchantId, setMerchantId] = useState<number | null>(null);
+  const [sallaStoreInfo, setSallaStoreInfo] = useState<SallaStoreInfo | null>(null);
 
   return (
-    <SallaContext.Provider value={state}>{children}</SallaContext.Provider>
+    <SallaContext.Provider value={{ ...params, merchantId, setMerchantId, sallaStoreInfo, setSallaStoreInfo }}>
+      {children}
+    </SallaContext.Provider>
   );
 };
 

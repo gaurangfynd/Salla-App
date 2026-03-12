@@ -10,9 +10,35 @@ import { embedded } from "@salla.sa/embedded-sdk";
 import { useSalla } from "./context/salla-context";
 
 
+async function introspectToken(token: string, appId: string | null) {
+  const res = await fetch("http://localhost:3032/api/salla/introspect", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ token, appId }),
+  });
+  const data = await res.json();
+  console.log("data from introspect api", data);
+  return data;
+}
+
+async function fetchSallaStoreInfo(token: string) {
+  const res = await fetch("https://accounts.salla.sa/oauth2/user/info", {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+  const data = await res.json();
+  console.log("salla user info", data);
+  return data?.success && data?.data ? data.data : null;
+}
+
 function App() {
   const initialized = useRef(false);
-  const { appId, token, locale, dark } = useSalla();
+  const { appId, token, locale, dark, setMerchantId, merchantId, setSallaStoreInfo } = useSalla();
 
   useEffect(() => {
     if (initialized.current) return;
@@ -21,35 +47,29 @@ function App() {
     async function init() {
       try {
         // 1) Establish connection with Salla Dashboard
-        // await embedded.init({ debug: true });
+        await embedded.init({ debug: true });
 
         // 2) Try to get the short-lived session token from Salla
         const tokenValue = embedded.auth.getToken() || token;
         console.log("tokenValue", tokenValue, typeof appId, appId);
         if (!tokenValue) {
-          // Opened outside Salla: just mark the app as ready
-          embedded.page.setTitle("Store Registration");
           return;
         }
 
         // 3) Send token to backend for verification / session creation
-        const response = await fetch(
-          "http://localhost:3032/api/salla/introspect",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ token: tokenValue, appId: appId }),
-          }
-        );
-        const data = await response.json();
-        console.log("data from introspect api", data);
-        if (data.success) {
+        const introspectData = await introspectToken(tokenValue, appId);
+        if (introspectData.success) {
           embedded.ready();
-          console.log("embedded initialized without Salla token");
+          setMerchantId(introspectData.data.data.merchant_id);
+
+          // 4) Fetch and store Salla store/user info
+          const storeInfo = await fetchSallaStoreInfo(tokenValue);
+          if (storeInfo) {
+            setSallaStoreInfo(storeInfo);
+            console.log("salla store info set", storeInfo);
+          }
         } else {
-          console.error("Failed to initialize embedded", data.message);
+          console.error("Failed to initialize embedded", introspectData.message);
         }
       } catch (err) {
         console.error(err);
