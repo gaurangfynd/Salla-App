@@ -1,5 +1,4 @@
 import { useEffect, useState, useMemo } from "react";
-// import { SaveBar, useAppBridge } from "@shopify/app-bridge-react";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { useNavigate } from "react-router";
 // import { useFetcher, useLoaderData, useRevalidator } from "react-router";
@@ -7,6 +6,58 @@ import { useNavigate } from "react-router";
 // import { setShopMetaFields } from "../utils/shop.metafields";
 import Pixelbin from "@pixelbin/core";
 // import { FUSION_SHOPIFY_DOMAIN } from "../config/config";
+import { embedded } from "@salla.sa/embedded-sdk";
+import { fetchWithAuth } from "../../../utils/fetchWithAuth";
+import { useSalla } from "../../../context/salla-context";
+
+const BACKEND_URL = "http://localhost:3032";
+
+// ---------- update-copilot ----------
+async function updateCopilot(
+  payload: { merchantId: number; ownerEmail: string; data: Record<string, any> },
+  token: string,
+) {
+  const res = await fetchWithAuth(
+    `${BACKEND_URL}/api/salla/updateApp`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    },
+    { token, storeId: payload.merchantId },
+  );
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(`updateCopilot API error: ${res.status} ${text}`);
+  }
+  const data = await res.json().catch(() => ({}));
+  console.log("updateCopilot response", data);
+  return data;
+}
+
+// ---------- icon-init (get signed upload URL) ----------
+async function iconInit(
+  payload: { merchantId: number; ownerEmail: string; file_name: string; file_type: string; file_size: number },
+  token: string,
+) {
+  const res = await fetchWithAuth(
+    `${BACKEND_URL}/api/salla/icon/init`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    },
+    { token, storeId: payload.merchantId },
+  );
+  if (!res.ok) {
+    const text = await res.text().catch(() => "");
+    throw new Error(`iconInit API error: ${res.status} ${text}`);
+  }
+  const data = await res.json();
+  console.log("iconInit response", data);
+  // returns: { ok, signed: { data: { method, url, fields, cdn_path, storage_type } } }
+  return data;
+}
 
 
 
@@ -598,14 +649,7 @@ const THEMES: Record<string, any> = {
 // ========================= Component =========================
 export default function AiAgentDetails() {
   const navigate = useNavigate();
-  //   const loaderData = useLoaderData<typeof loader>();
-  //   const fetcher = useFetcher<typeof action>();
-  //   const toggleFetcher = useFetcher<typeof action>(); // NEW: separate fetcher for toggle
-  //   const shopify = useAppBridge();
-  // const revalidator = useRevalidator();
-  //   const { billingAddress, ableToCreateBot } = loaderData;
-  //   const nameFetcher = useFetcher<typeof action>();
-  //   const iconInitFetcher = useFetcher<typeof action>();
+  const { merchantId, sallaStoreInfo, appData, usageData, ableToCreateBot, token } = useSalla();
 
   const [iconUploading, setIconUploading] = useState(false);
   const [iconError, setIconError] = useState<string>("");
@@ -633,41 +677,16 @@ export default function AiAgentDetails() {
   //     setEditName(latest);
   //   }, [loaderData?.data?.data?.copilot?.name, loaderData?.data?.copilot?.name]);
 
-  //   useEffect(() => {
-  //     if (
-  //       nameFetcher.state === "idle" &&
-  //       nameFetcher.data &&
-  //       (nameFetcher.data as any).ok !== undefined
-  //     ) {
-  //       if ((nameFetcher.data as any).ok) {
-  //         shopify.toast.show("Copilot name updated");
-  //         // Removed revalidator.revalidate() to prevent currentStep from resetting to 0
-  //         // revalidator.revalidate();
-  //         // close the modal
-  //         document
-  //           .querySelector(
-  //             's-button[commandFor="editNameModal"][command="--hide"]',
-  //           )
-  //           ?.dispatchEvent(new Event("click", { bubbles: true }));
-  //       } else {
-  //         shopify.toast.show("Failed to update name");
-  //         console.error("Update name error:", (nameFetcher.data as any).error);
-  //       }
-  //     }
-  //     // eslint-disable-next-line react-hooks/exhaustive-deps
-  //   }, [nameFetcher.state]);
 
   // 0|2|3|4 = step numbers (2 = loader, 3 = success)
   const [currentStep, setCurrentStep] = useState<0 | 2 | 3 | 4>(3);
 
-  // Use loader data directly so revalidation updates are reflected
-  //   const existingData = loaderData?.data || null;
-  const existingData = null;
+  // Salla equivalent of Shopify's useLoaderData
+  const existingData = appData ?? null;
+  const usage = (usageData as any)?.data?.usage ?? {};
+
 
   console.log("Existing Data:", existingData);
-
-  //   const usage = loaderData?.dataUsage?.data?.usage;
-  const usage = {};
 
   const planName = usage?.plan?.name || "Free Trial";
   const endDate = usage?.endDate || null;
@@ -689,20 +708,20 @@ export default function AiAgentDetails() {
   const dssyFeature = features.find((f) => f.id === "dssy") || {};
   const dsFeature = features.find((f) => f.id === "ds") || {};
 
-  const appTotal = appFeature?.units || 100;
-  const appUsed = appFeature?.currentUsage || 50;
+  const appTotal = appFeature?.units || 0;
+  const appUsed = appFeature?.currentUsage || 0;
   const appPercent = appTotal > 0 ? (appUsed / appTotal) * 100 : 0;
 
-  const qTotal = qFeature?.units ?? 100;
-  const qUsed = qFeature?.currentUsage ?? 20;
+  const qTotal = qFeature?.units ?? 0;
+  const qUsed = qFeature?.currentUsage ?? 0;
   const qPercent = qTotal > 0 ? (qUsed / qTotal) * 100 : 0;
 
-  const dssyTotal = dssyFeature?.units || 100;
-  const dssyUsed = dssyFeature?.currentUsage || 30;
+  const dssyTotal = dssyFeature?.units || 0;
+  const dssyUsed = dssyFeature?.currentUsage || 0;
   const dssyPercent = dssyTotal > 0 ? (dssyUsed / dssyTotal) * 100 : 0;
 
-  const dsTotal = dsFeature?.units || 100;
-  const dsUsed = dsFeature?.currentUsage || 40;
+  const dsTotal = dsFeature?.units || 0;
+  const dsUsed = dsFeature?.currentUsage || 0;
   const dsPercent = dsTotal > 0 ? (dsUsed / dsTotal) * 100 : 0;
 
   const [showSetupLoader, setShowSetupLoader] = useState(false);
@@ -782,7 +801,7 @@ export default function AiAgentDetails() {
     }
 
     // Return empty cleanup function for the case when copilotToken is not available
-    return () => {};
+    return () => { };
   }, [existingData?.data?.copilot?.token, showSecondItem, copilotReloadKey]);
 
   const openModal = () => {
@@ -806,81 +825,7 @@ export default function AiAgentDetails() {
     }
   }, [existingData, currentStep]);
 
-  //   useEffect(() => {
-  //     if (fetcher.data?.success) {
-  //       shopify.toast.show("Data received!");
-  //     } else if (
-  //       fetcher.data &&
-  //       !fetcher.data?.success &&
-  //       !(fetcher.data as any).ok
-  //     ) {
-  //       shopify.toast.show(`Error: ${fetcher.data?.error || "Unknown error"}`);
-  //       setCurrentStep(0);
-  //       setShowSetupLoader(false);
-  //     }
-  //   }, [fetcher.data, shopify]);
 
-  //   useEffect(() => {
-  //     if (!showSetupLoader) return;
-
-  //     setDone1(false);
-  //     setDone2(false);
-  //     setDone3(false);
-
-  //     const timer1 = setTimeout(() => setDone1(true), 5000);
-  //     const timer2 = setTimeout(() => setDone2(true), 10000);
-  //     const timer3 = setTimeout(() => {
-  //       setDone3(true);
-  //       setCurrentStep(3);
-  //     }, 15000);
-
-  //     return () => {
-  //       clearTimeout(timer1);
-  //       clearTimeout(timer2);
-  //       clearTimeout(timer3);
-  //     };
-  //   }, [showSetupLoader]);
-
-  // const [embedEnabled, setEmbedEnabled] = useState<boolean>(
-  //   Boolean(loaderData?.isEnableAppEmbed),
-  // );
-
-  //   useEffect(() => {
-  //     setEmbedEnabled(Boolean(loaderData?.isEnableAppEmbed));
-  //   }, [loaderData?.isEnableAppEmbed]);
-
-  const onToggleEmbed = (checked: boolean) => {
-    //   window.open(loaderData?.appEmbedUrl, "_blank");
-  };
-
-  //   useEffect(() => {
-  //     if (toggleFetcher.state === "idle" && toggleFetcher.data) {
-  //       if ((toggleFetcher.data as any).ok) {
-  //         shopify.toast.show(
-  //           embedEnabled ? "Copilot embed enabled" : "Copilot embed disabled",
-  //         );
-  //         revalidator.revalidate();
-  //       } else {
-  //         setEmbedEnabled((prev) => !prev);
-  //         shopify.toast.show("Failed to update embed");
-  //         console.error("Toggle error:", (toggleFetcher.data as any).error);
-  //       }
-  //     }
-  //   }, [toggleFetcher.state]);
-
-  //   const startSetup = () => () => {
-  //     if (!billingAddress) {
-  //       shopify.toast.show("Please set your store billing address first.");
-  //       return;
-  //     }
-  //     if (ableToCreateBot) {
-  //       setCurrentStep(2);
-  //       setShowSetupLoader(true);
-  //       handleStartSync();
-  //     } else {
-  //       setCurrentStep(4);
-  //     }
-  //   };
 
   //   const settingsFetcher = useFetcher<typeof action>();
 
@@ -935,7 +880,7 @@ export default function AiAgentDetails() {
     return ok;
   };
 
-  const onSave = () => {
+  const onSave = async () => {
     if (!draftCopilot) return;
 
     // send ONLY what you want to update (recommended)
@@ -958,10 +903,25 @@ export default function AiAgentDetails() {
 
     console.log("payloadToSend", JSON.stringify(payloadToSend));
 
-    // settingsFetcher.submit(
-    //   { intent: "update-copilot", payload: JSON.stringify(payloadToSend) },
-    //   { method: "POST" },
-    // );
+    if (!merchantId || !sallaStoreInfo?.email) {
+      console.error("Missing merchantId or ownerEmail for updateCopilot");
+      return;
+    }
+
+    try {
+      await updateCopilot(
+        {
+          merchantId,
+          ownerEmail: sallaStoreInfo.email,
+          data: payloadToSend,
+        },
+        token ?? "",
+      );
+      setBaselineCopilot(structuredClone(draftCopilot));
+      console.log("Copilot updated successfully");
+    } catch (err) {
+      console.error("updateCopilot failed:", err);
+    }
   };
 
   const onDiscard = () => setDraftCopilot(structuredClone(baselineCopilot));
@@ -1014,22 +974,25 @@ export default function AiAgentDetails() {
   //     }
   //   }, [isDirty, shopify]);
 
-  const handleSave = () => {
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleSave = async () => {
     if (!validateBeforeSave()) {
-      //   shopify.toast.show("Please fix errors before saving.");
       return;
     }
-    onSave();
+    setIsSaving(true);
+    try {
+      await onSave();
+    } finally {
+      setIsSaving(false);
+    }
   };
 
-  //   const handleDiscard = () => {
-  //     onDiscard(); // draft = baseline
-  //     setNameError("");
-  //     setPersonaError("");
-  //     shopify.saveBar.hide("save-bar");
-  //   };
-
-  //   const loading = ["loading", "submitting"].includes(settingsFetcher.state);
+  const handleDiscard = () => {
+    onDiscard();
+    setNameError("");
+    setPersonaError("");
+  };
 
   const [selectedThemeId, setSelectedThemeId] = useState<string>("");
   //draftCopilot?.configuration?.appearance?.themeId || "";
@@ -1067,31 +1030,77 @@ export default function AiAgentDetails() {
     if (!file) return;
 
     // validate
-    if (file.type !== "image/png")
-      if (file.size > 2 * 1024 * 1024)
-        //   return shopify.toast.show("Please upload PNG only");
-        // return shopify.toast.show("Max 2MB");
+    if (file.type !== "image/png") {
+      embedded.ui.toast.error("Please upload PNG only");
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      embedded.ui.toast.error("Max file size is 2MB");
+      return;
+    }
 
-        // ✅ instant preview
-        //     const localUrl = URL.createObjectURL(file);
-        // setIconPreviewUrl(localUrl);
-
-        setPickedFile(file);
-
-    // init call
-    const fd = new FormData();
-    fd.append("intent", "icon-init");
-    fd.append(
-      "payload",
-      JSON.stringify({
-        file_name: file.name,
-        file_type: file.type,
-        file_size: file.size,
-      }),
-    );
+    const localUrl = URL.createObjectURL(file);
+    setIconPreviewUrl(localUrl);
 
     setIconUploading(true);
-    // iconInitFetcher.submit(fd, { method: "POST", action: "/app?index" });
+
+    try {
+      if (!merchantId || !sallaStoreInfo?.email) {
+        throw new Error("Missing merchantId or ownerEmail for icon upload");
+      }
+
+      // 1) Get signed upload URL from backend
+      const initResponse = await iconInit(
+        {
+          merchantId,
+          ownerEmail: sallaStoreInfo.email,
+          file_name: file.name,
+          file_type: file.type,
+          file_size: file.size,
+        },
+        token ?? "",
+      );
+
+      if (!initResponse?.ok) {
+        throw new Error(initResponse?.error || "Icon init failed");
+      }
+
+      const signed = initResponse?.signed?.data;
+      const { method = "PUT", url, fields, cdn_path } = signed || {};
+
+      if (!url || !cdn_path) {
+        throw new Error("Missing signed URL or cdn_path from icon init");
+      }
+
+      // 2) Upload the file directly to the signed URL
+      if (fields) {
+        // Multipart / S3-style POST
+        const uploadForm = new FormData();
+        Object.entries(fields).forEach(([k, v]) =>
+          uploadForm.append(k, v as string),
+        );
+        uploadForm.append("file", file);
+        await fetch(url, { method: "POST", body: uploadForm });
+      } else {
+        // Simple PUT
+        await fetch(url, {
+          method,
+          headers: { "Content-Type": file.type },
+          body: file,
+        });
+      }
+
+      // 3) Store the cdn_path so it's included in the next save
+      const localUrl = URL.createObjectURL(file);
+      setIconPreviewUrl(localUrl);
+      setPendingIconCdnPath(cdn_path);
+      console.log("Icon uploaded, cdn_path:", cdn_path);
+    } catch (err) {
+      console.error("Icon upload failed:", err);
+      setIconError(String(err));
+    } finally {
+      setIconUploading(false);
+    }
   };
 
   useEffect(() => {
@@ -1193,14 +1202,60 @@ export default function AiAgentDetails() {
   };
 
   return (
+
     <div className="mx-auto w-full max-w-7xl px-4 py-6 my-5">
-      <div className="relative">
+      <div className="relative mt-4">
+        {/* Save bar — slides in from top when there are unsaved changes */}
         <div
-          className={`grid gap-6 ${
-            showSecondItem
-              ? "grid-cols-1 lg:grid-cols-[1fr_360px]"
-              : "grid-cols-1"
-          }`}
+          className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-3 px-5 py-3 shadow-md transition-transform duration-300 ${isDirty ? "translate-y-0" : "-translate-y-full"
+            }`}
+          style={{
+            backgroundColor: "var(--salla-background-color)",
+            borderBottom: "1px solid var(--salla-secondary-color)",
+          }}
+        >
+          <p className="text-sm font-medium" style={{ color: "var(--salla-primary-color)" }}>
+            Unsaved changes
+          </p>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleDiscard}
+              disabled={isSaving}
+              className="cursor-pointer inline-flex items-center justify-center rounded-lg border px-4 py-1.5 text-sm font-medium transition disabled:opacity-50"
+              style={{
+                borderColor: "var(--salla-secondary-color)",
+                color: "var(--salla-primary-color)",
+              }}
+            >
+              Discard
+            </button>
+            <button
+              type="button"
+              onClick={handleSave}
+              disabled={isSaving || !!nameError || !!personaError}
+              className="cursor-pointer inline-flex items-center justify-center gap-2 rounded-lg px-4 py-1.5 text-sm font-semibold transition disabled:opacity-50"
+              style={{
+                backgroundColor: "var(--salla-secondary-color)",
+                color: "var(--salla-light-mode-primary-color)",
+              }}
+            >
+              {isSaving ? (
+                <>
+                  <span className="inline-block h-3.5 w-3.5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                  Saving…
+                </>
+              ) : (
+                "Save"
+              )}
+            </button>
+          </div>
+        </div>
+        <div
+          className={`grid gap-6 ${showSecondItem
+            ? "grid-cols-1 lg:grid-cols-[1fr_360px]"
+            : "grid-cols-1"
+            }`}
         >
           {/* LEFT COLUMN */}
           <div className="space-y-6">
@@ -1220,7 +1275,7 @@ export default function AiAgentDetails() {
                   <button
                     type="button"
                     className="absolute -bottom-2 right-1  flex  items-center gap-2 rounded-lg bg-gray-200 px-2 py-1 text-sm font-medium text-[var(--salla-primary-color)]   transition hover:text-white cursor-pointer"
-                    // onClick={() => !iconUploading && triggerIconPicker()}
+                    onClick={() => !iconUploading && triggerIconPicker()}
                     disabled={iconUploading}
                   >
                     {iconUploading ? (
@@ -1231,11 +1286,17 @@ export default function AiAgentDetails() {
                   </button>
 
                   {/* hidden input */}
+                  {/* hidden input */}
                   <input
                     id="copilot-icon-input"
                     type="file"
                     accept="image/png"
-                    className="hidden"
+                    style={{ display: "none" }}
+                    onChange={(e) => {
+                      const f = (e.target as HTMLInputElement).files?.[0];
+                      if (f) onPickIconFile(f);
+                      (e.target as HTMLInputElement).value = "";
+                    }}
                   />
                 </div>
 
@@ -1270,7 +1331,7 @@ export default function AiAgentDetails() {
                     <p className="text-sm font-medium text-[var(--salla-primary-color)]">
                       Enable app on your store
                     </p>
-                    <span className="rounded-full border border-[var(--salla-secondary-color)] p-3 py-1 text-sm font-semibold text-[var(--salla-primary-color)]">
+                    <span className="rounded-full border border-[var(--salla-secondary-color)] p-3 py-0.5 text-xs font-semibold text-[var(--salla-primary-color)]">
                       Off
                     </span>
                   </div>
@@ -1279,7 +1340,7 @@ export default function AiAgentDetails() {
                 <button
                   type="button"
                   className="cursor-pointer rounded-xl  px-3 py-1.5   transition bg-[var(--salla-secondary-color)]"
-                  //   onClick={() => onToggleEmbed(!embedEnabled)}
+                //   onClick={() => onToggleEmbed(!embedEnabled)}
                 >
                   <span className="text-sm font-medium text-[var(--salla-light-mode-primary-color)] ">
                     Turn On
@@ -1467,22 +1528,20 @@ export default function AiAgentDetails() {
                       <button
                         type="button"
                         onClick={() => setActiveTab("template")}
-                        className={`cursor-pointer rounded-lg px-3 py-1.5  transition ${
-                          activeTab === "template"
-                            ? "bg-[var(--salla-secondary-color)] text-[var(--salla-light-mode-primary-color)]  "
-                            : "!text-[var(--salla-secondary-font-color)]"
-                        }`}
+                        className={`cursor-pointer rounded-lg px-3 py-1.5  transition ${activeTab === "template"
+                          ? "bg-[var(--salla-secondary-color)] text-[var(--salla-light-mode-primary-color)]  "
+                          : "!text-[var(--salla-secondary-font-color)]"
+                          }`}
                       >
                         <p className="text-sm font-medium">Predefined</p>
                       </button>
                       <button
                         type="button"
                         onClick={() => setActiveTab("customize")}
-                        className={`cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium transition ${
-                          activeTab === "customize"
-                            ? "bg-[var(--salla-secondary-color)] text-[var(--salla-light-mode-primary-color)]  "
-                            : "!text-[var(--salla-secondary-font-color)]"
-                        }`}
+                        className={`cursor-pointer rounded-lg px-3 py-1.5 text-sm font-medium transition ${activeTab === "customize"
+                          ? "bg-[var(--salla-secondary-color)] text-[var(--salla-light-mode-primary-color)]  "
+                          : "!text-[var(--salla-secondary-font-color)]"
+                          }`}
                       >
                         <p className="text-sm font-medium">Custom</p>
                       </button>
@@ -1518,11 +1577,10 @@ export default function AiAgentDetails() {
                                 },
                               );
                             }}
-                            className={`cursor-pointer rounded-xl p-0.5 transition ${
-                              selected
-                                ? "ring-1 ring-[var(--salla-secondary-color)]"
-                                : "ring-1 ring-transparent hover:ring-[var(--salla-border-color)]"
-                            }`}
+                            className={`cursor-pointer rounded-xl p-0.5 transition ${selected
+                              ? "ring-1 ring-[var(--salla-secondary-color)]"
+                              : "ring-1 ring-transparent hover:ring-[var(--salla-border-color)]"
+                              }`}
                             title={t.themeId}
                           >
                             <span

@@ -99,11 +99,11 @@ const AIAgentSetup = () => {
    * navigates to the AI Agent details page with a query parameter indicating
    * the user came from the setup flow.
    */
-  useEffect(() => {
-    if (steps[2].completed && createdAIAgent?.id) {
-      navigate(`../${createdAIAgent.id}?fromSetup=true`);
-    }
-  }, [steps, createdAIAgent, navigate]);
+  // useEffect(() => {
+  //   if (steps[2].completed && createdAIAgent?.id) {
+  //     navigate(`../${createdAIAgent.id}?fromSetup=true`);
+  //   }
+  // }, [steps, createdAIAgent, navigate]);
 
   return (
     <main className="ai-agent">

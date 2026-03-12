@@ -46,6 +46,18 @@ type SallaStoreInfo = {
   };
 };
 
+type SallaAppData = {
+  copilot?: {
+    token?: string;
+    [key: string]: any;
+  };
+  [key: string]: any;
+};
+
+type SallaUsageData = {
+  [key: string]: any;
+};
+
 type SallaContextValue = {
   locale: string | null;
   token: string | null;
@@ -55,6 +67,12 @@ type SallaContextValue = {
   setMerchantId: (id: number) => void;
   sallaStoreInfo: SallaStoreInfo | null;
   setSallaStoreInfo: (info: SallaStoreInfo) => void;
+  ableToCreateBot: boolean;
+  setAbleToCreateBot: (value: boolean) => void;
+  appData: SallaAppData | null;
+  setAppData: (data: SallaAppData) => void;
+  usageData: SallaUsageData | null;
+  setUsageData: (data: SallaUsageData) => void;
 };
 
 const SallaContext = createContext<SallaContextValue | undefined>(undefined);
@@ -71,7 +89,14 @@ type SallaProviderProps = {
   children: React.ReactNode;
 };
 
-type SallaParams = Omit<SallaContextValue, "merchantId" | "setMerchantId">;
+type SallaParams = Omit<
+  SallaContextValue,
+  | "merchantId" | "setMerchantId"
+  | "sallaStoreInfo" | "setSallaStoreInfo"
+  | "ableToCreateBot" | "setAbleToCreateBot"
+  | "appData" | "setAppData"
+  | "usageData" | "setUsageData"
+>;
 
 const parseSallaParams = (): SallaParams => {
   if (typeof window === "undefined") {
@@ -92,9 +117,26 @@ export const SallaProvider: React.FC<SallaProviderProps> = ({ children }) => {
   const [params] = useState<SallaParams>(parseSallaParams);
   const [merchantId, setMerchantId] = useState<number | null>(null);
   const [sallaStoreInfo, setSallaStoreInfo] = useState<SallaStoreInfo | null>(null);
+  const [ableToCreateBot, setAbleToCreateBot] = useState<boolean>(false);
+  const [appData, setAppData] = useState<SallaAppData | null>(null);
+  const [usageData, setUsageData] = useState<SallaUsageData | null>(null);
 
   return (
-    <SallaContext.Provider value={{ ...params, merchantId, setMerchantId, sallaStoreInfo, setSallaStoreInfo }}>
+    <SallaContext.Provider
+      value={{
+        ...params,
+        merchantId,
+        setMerchantId,
+        sallaStoreInfo,
+        setSallaStoreInfo,
+        ableToCreateBot,
+        setAbleToCreateBot,
+        appData,
+        setAppData,
+        usageData,
+        setUsageData,
+      }}
+    >
       {children}
     </SallaContext.Provider>
   );

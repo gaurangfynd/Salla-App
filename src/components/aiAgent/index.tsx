@@ -4,12 +4,39 @@ import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { openWindow } from "../../utils/browser";
+import { fetchWithAuth } from "../../utils/fetchWithAuth";
 import "./index.less";
+import { useSalla } from "../../context/salla-context";
+
+const BACKEND_URL = "http://localhost:3032";
+
+async function createSallaAgent(payload: {
+  ownerFirstName: string;
+  ownerLastName: string;
+  ownerEmail: string;
+  sallaStoreId: number;
+  aiAgentName: string;
+  active?: boolean;
+  companyName: string;
+  companyCountry: string;
+  companyState: string;
+  metadata: Record<string, any>;
+}): Promise<any> {
+  const res = await fetchWithAuth(`${BACKEND_URL}/api/salla/createApp`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json();
+  console.log("createSallaAgent response", data);
+  return data;
+}
 
 function AIAgent() {
-
   const navigate = useNavigate();
+  const { ableToCreateBot, sallaStoreInfo, merchantId } = useSalla();
   const [isReadyForSetup, setIsReadyForSetup] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
   const [hasMapping, setHasMapping] = useState<boolean | null>(null);
   const [hasUsage, setHasUsage] = useState<boolean | null>(null);
   const [mappingData, setMappingData] = useState<{
@@ -58,8 +85,42 @@ function AIAgent() {
     }
   };
 
-  const handleSetupRedirection = () => {
-    navigate("/setup");
+  const handleSetupRedirection = async () => {
+    if (!ableToCreateBot) {
+      navigate("/details");
+      return;
+    }
+
+    if (!sallaStoreInfo || !merchantId) {
+      console.error("Missing store info or merchant ID");
+      return;
+    }
+
+    try {
+      setIsCreating(true);
+      navigate("/setup"); // show stepper immediately while creation runs
+
+      const result = await createSallaAgent({
+        ownerFirstName: sallaStoreInfo.name?.split(" ")[0] || "",
+        ownerLastName: sallaStoreInfo.name?.split(" ")[1] || "Salla",
+        ownerEmail: sallaStoreInfo.email,
+        sallaStoreId: merchantId,
+        aiAgentName: sallaStoreInfo.merchant.name,
+        active: true,
+        metadata: {},
+        companyName: sallaStoreInfo.merchant.name,
+        companyCountry: sallaStoreInfo.merchant.kyc_country,
+        companyState: 'Saudi Arabia',
+      });
+
+      if (!result?.success) {
+        console.error("createSallaAgent failed:", result?.error || result?.message);
+      }
+    } catch (err) {
+      console.error("Error creating Salla agent:", err);
+    } finally {
+      setIsCreating(false);
+    }
   };
 
   const handlePrimaryButtonClick = async () => {
@@ -94,14 +155,16 @@ function AIAgent() {
                   24/7 support, personalized shopping experiences, and more
                 </p>
               </div>
-              <button
-                type="button"
-                className="cursor-pointer ai-agent__body__card__header-button inline-flex items-center justify-center rounded-lg bg-[var(--salla-secondary-color)] px-4 py-2 text-sm font-medium text-[var(--salla-light-mode-primary-color)] shadow-sm hover:bg-gray-800 transition"
-                data-testid="setup-button"
-                onClick={handleSetupRedirection}
-              >
-                Setup in 1 click
-              </button>
+              {ableToCreateBot && (
+                <button
+                  type="button"
+                  className="cursor-pointer ai-agent__body__card__header-button inline-flex items-center justify-center rounded-lg bg-[var(--salla-secondary-color)] px-4 py-2 text-sm font-medium text-[var(--salla-light-mode-primary-color)] shadow-sm hover:bg-gray-800 transition"
+                  data-testid="setup-button"
+                  onClick={handleSetupRedirection}
+                >
+                  Setup in 1 click
+                </button>
+              )}
             </div>
             <div className="ai-agent__body__card__header-right">
               <SVGLoader
@@ -242,9 +305,9 @@ function AIAgent() {
                   key={benefit.id}
                   className="ai-agent__body__card__body__benefit"
                 >
-                  
-             <SVGLoader src={benefit?.icon} className="ai-agent-body-icons"/>
-                  
+
+                  <SVGLoader src={benefit?.icon} className="ai-agent-body-icons" />
+
                   <div className="ai-agent__body__card__body__benefit-content">
                     <h4 className="ai-agent__body__card__body-info-title text-sm font-semibold">
                       {benefit.title}
