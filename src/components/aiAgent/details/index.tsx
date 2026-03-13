@@ -1219,7 +1219,7 @@ export default function AiAgentDetails() {
       <div className="relative mt-4">
         {/* Save bar — slides in from top when there are unsaved changes */}
         <div
-          className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-3 px-5 py-3 shadow-md transition-transform duration-300 ${isDirty ? "translate-y-0" : "-translate-y-full"
+          className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-3 px-5 py-3 shadow-md transition-transform duration-300 ${isDirty ? "translate-y-0" : "-translate-y-25"
             }`}
           style={{
             backgroundColor: "var(--salla-background-color)",
