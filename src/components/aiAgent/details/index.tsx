@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router";
 import { useNavigate } from "react-router";
 // import { useFetcher, useLoaderData, useRevalidator } from "react-router";
@@ -1006,15 +1006,23 @@ export default function AiAgentDetails() {
     }));
   }, []);
 
-  //   //const [personaDraft, setPersonaDraft] = useState(draftCopilot?.persona || "");
-  //   const [personaDraft, setPersonaDraft] = useState("");
-  //   const isPersonaDirty = useMemo(() => {
-  //     return personaDraft !== (draftCopilot?.persona || "");
-  //   }, [personaDraft, draftCopilot?.persona]);
+  //const [personaDraft, setPersonaDraft] = useState(draftCopilot?.persona || "");
+  const [personaDraft, setPersonaDraft] = useState("");
+    const [showPersonaModal, setShowPersonaModal] = useState(false);
+    const personaTextareaRef = useRef<HTMLTextAreaElement>(null);
+    useEffect(() => {
+      if (showPersonaModal) {
+        // wait one frame for the modal to mount before focusing
+        requestAnimationFrame(() => personaTextareaRef.current?.focus());
+      }
+    }, [showPersonaModal]);
+    const isPersonaDirty = useMemo(() => {
+    return personaDraft !== (draftCopilot?.persona || "");
+  }, [personaDraft, draftCopilot?.persona]);
 
-  //   useEffect(() => {
-  //     setPersonaDraft(draftCopilot?.persona || "");
-  //   }, [draftCopilot?.persona]);
+  useEffect(() => {
+    setPersonaDraft(draftCopilot?.persona || "");
+  }, [draftCopilot?.persona]);
 
   const [iconPreviewUrl, setIconPreviewUrl] = useState<string>(""); // local blob url
   const [pendingIconCdnPath, setPendingIconCdnPath] = useState<string>(""); // cdn_path to send on save
@@ -1217,6 +1225,133 @@ export default function AiAgentDetails() {
 
     <div className="mx-auto w-full max-w-7xl px-4 py-6 my-5">
       <div className="relative mt-4">
+
+        {/* Persona edit modal */}
+        {showPersonaModal && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            style={{ backgroundColor: "rgba(0,0,0,0.45)" }}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                setPersonaDraft(draftCopilot?.persona || "");
+                setPersonaError("");
+                setShowPersonaModal(false);
+              }
+            }}
+          >
+            <div
+              className="flex w-full max-w-2xl flex-col rounded-2xl shadow-2xl overflow-hidden"
+              style={{ backgroundColor: "var(--salla-background-color)" }}
+            >
+              {/* Header */}
+              <div
+                className="flex items-center justify-between px-6 py-4"
+                style={{ borderBottom: "1px solid var(--salla-border-color)" }}
+              >
+                <h2 className="text-base font-semibold" style={{ color: "var(--salla-primary-color)" }}>
+                  Edit Persona
+                </h2>
+                <button
+                  type="button"
+                  className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg transition hover:opacity-70"
+                  style={{ color: "var(--salla-secondary-font-color)" }}
+                  onClick={() => {
+                    setPersonaDraft(draftCopilot?.persona || "");
+                    setPersonaError("");
+                    setShowPersonaModal(false);
+                  }}
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Body */}
+              <div className="flex flex-col gap-3 px-6 py-5">
+                <textarea
+                  ref={personaTextareaRef}
+                  rows={14}
+                  className="w-full resize-none rounded-xl border px-4 py-3 text-sm outline-none transition"
+                  style={{
+                    borderColor: personaError ? "#ef4444" : "var(--salla-border-color)",
+                    backgroundColor: "var(--salla-background-color)",
+                    color: "var(--salla-primary-color)",
+                    boxShadow: "none",
+                  }}
+                  onFocus={(e) => (e.currentTarget.style.borderColor = personaError ? "#ef4444" : "var(--salla-secondary-color)")}
+                  onBlur={(e) => (e.currentTarget.style.borderColor = personaError ? "#ef4444" : "var(--salla-border-color)")}
+                  value={personaDraft}
+                  onChange={(e) => {
+                    const raw = e.target.value;
+                    const next = raw.slice(0, PERSONA_MAX);
+                    setPersonaDraft(next);
+                    setPersonaError(raw.length > PERSONA_MAX ? `Maximum ${PERSONA_MAX} characters allowed.` : "");
+                  }}
+                />
+
+                {/* char count / error */}
+                <div className="flex items-center justify-between text-xs">
+                  {personaError ? (
+                    <span className="font-medium text-red-500">{personaError}</span>
+                  ) : (
+                    <span style={{ color: "var(--salla-secondary-font-color)" }}>
+                      {personaDraft.length} / {PERSONA_MAX}
+                    </span>
+                  )}
+                  {/* progress bar */}
+                  <div className="h-1 w-32 overflow-hidden rounded-full" style={{ backgroundColor: "var(--salla-border-color)" }}>
+                    <div
+                      className="h-full rounded-full transition-all duration-200"
+                      style={{
+                        width: `${Math.min((personaDraft.length / PERSONA_MAX) * 100, 100)}%`,
+                        backgroundColor: personaError ? "#ef4444" : "var(--salla-secondary-color)",
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div
+                className="flex items-center justify-end gap-3 px-6 py-4"
+                style={{ borderTop: "1px solid var(--salla-border-color)" }}
+              >
+                <button
+                  type="button"
+                  className="cursor-pointer rounded-xl border px-5 py-2 text-sm font-medium transition hover:opacity-80"
+                  style={{
+                    borderColor: "var(--salla-border-color)",
+                    color: "var(--salla-primary-color)",
+                    backgroundColor: "var(--salla-background-color)",
+                  }}
+                  onClick={() => {
+                    setPersonaDraft(draftCopilot?.persona || "");
+                    setPersonaError("");
+                    setShowPersonaModal(false);
+                  }}
+                >
+                  Cancel
+                </button>
+
+                <button
+                  type="button"
+                  disabled={!isPersonaDirty || !!personaError}
+                  className="cursor-pointer rounded-xl px-5 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-40 hover:opacity-85"
+                  style={{
+                    backgroundColor: "var(--salla-secondary-color)",
+                    color: "var(--salla-light-mode-primary-color)",
+                  }}
+                  onClick={() => {
+                    updateDraft(["persona"], personaDraft);
+                    setPersonaError("");
+                    setShowPersonaModal(false);
+                  }}
+                >
+                  Update
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
         {/* Save bar — slides in from top when there are unsaved changes */}
         <div
           className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between gap-3 px-5 py-3 shadow-md transition-transform duration-300 ${isDirty ? "translate-y-0" : "-translate-y-25"
@@ -1432,7 +1567,10 @@ export default function AiAgentDetails() {
                     <label className="text-sm font-medium text-[var(--salla-primary-color)]">
                       AI model
                     </label>
-                    <select className="w-full rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-1 !text-sm !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)]   outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]">
+                    <select className="w-full rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-1 !text-sm !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)]   outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]" value={draftCopilot?.configuration?.provider?.chatModelName || ""}
+                      onChange={(e: any) =>
+                        updateDraft(["configuration", "provider", "chatModelName"], e?.target?.value)
+                      }>
                       <option value="gpt-3.5-turbo">
                         OpenAI GPT-3.5 Turbo (1 credit/message)
                       </option>
@@ -1524,7 +1662,11 @@ export default function AiAgentDetails() {
                     <label className="text-sm font-medium text-[var(--salla-primary-color)]">
                       Tone
                     </label>
-                    <select className="w-full rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-1 !text-sm !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)]   outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]">
+                    <select className="w-full rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-1 !text-sm !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)]   outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]"
+                      value={draftCopilot?.configuration?.traits?.personality || ""}
+                      onChange={(e: any) =>
+                        updateDraft(["configuration", "traits", "personality"], e?.target?.value)
+                      }>
                       <option value="professional">Professional</option>
                       <option value="sassy">Sassy</option>
                       <option value="empathetic">Empathetic</option>
@@ -1552,6 +1694,12 @@ export default function AiAgentDetails() {
                     rows={6}
                     className="w-full rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-2 text-sm !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)]   outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]"
                     placeholder="**Role:** You are an E-commerce Shopping Assistant..."
+                    value={draftCopilot?.persona || ""}
+
+                    onClick={() => {
+                      setPersonaDraft(draftCopilot?.persona || "");
+                      setShowPersonaModal(true);
+                    }}
                   />
                 </div>
 
