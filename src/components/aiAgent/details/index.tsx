@@ -1335,7 +1335,7 @@ export default function AiAgentDetails() {
                 <button
                   type="button"
                   disabled={!isPersonaDirty || !!personaError}
-                  className="cursor-pointer rounded-xl px-5 py-2 text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-40 hover:opacity-85"
+                  className="cursor-pointer rounded-xl px-5 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-40 hover:opacity-85"
                   style={{
                     backgroundColor: "var(--salla-secondary-color)",
                     color: "var(--salla-light-mode-primary-color)",
