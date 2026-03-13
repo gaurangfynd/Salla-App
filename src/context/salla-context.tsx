@@ -76,8 +76,8 @@ type SallaContextValue = {
   token: string | null;
   appId: string | null;
   dark: boolean;
-  merchantId: number | null;
-  setMerchantId: (id: number) => void;
+  merchantId: string | null;
+  setMerchantId: (id: string) => void;
   sallaStoreInfo: SallaStoreInfo | null;
   setSallaStoreInfo: (info: SallaStoreInfo) => void;
   ableToCreateBot: boolean;
@@ -128,7 +128,7 @@ export const SallaProvider: React.FC<SallaProviderProps> = ({ children }) => {
   // Lazy initializer: runs synchronously before first render, so all values
   // are available immediately when child components read the context.
   const [params] = useState<SallaParams>(parseSallaParams);
-  const [merchantId, setMerchantId] = useState<number | null>(null);
+  const [merchantId, setMerchantId] = useState<string | null>(null);
   const [sallaStoreInfo, setSallaStoreInfo] = useState<SallaStoreInfo | null>(null);
   const [ableToCreateBot, setAbleToCreateBot] = useState<boolean>(false);
   const [appData, setAppData] = useState<SallaAppData | null>(null);

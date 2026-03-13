@@ -14,12 +14,13 @@ async function createSallaAgent(payload: {
   ownerFirstName: string;
   ownerLastName: string;
   ownerEmail: string;
-  sallaStoreId: number;
+  sallaStoreId: string;
   aiAgentName: string;
   active?: boolean;
   companyName: string;
   companyCountry: string;
   companyState: string;
+  storefrontToken: string;
   metadata: Record<string, any>;
 }): Promise<any> {
   const res = await fetchWithAuth(`${BACKEND_URL}/api/salla/createApp`, {
@@ -33,6 +34,7 @@ async function createSallaAgent(payload: {
 }
 
 function AIAgent() {
+  const {appId, token, locale, dark } = useSalla();
   const navigate = useNavigate();
   const { ableToCreateBot, sallaStoreInfo, merchantId } = useSalla();
   const [isReadyForSetup, setIsReadyForSetup] = useState(false);
@@ -86,36 +88,37 @@ function AIAgent() {
   };
 
   const handleSetupRedirection = async () => {
-    if (!ableToCreateBot) {
-      navigate("/details");
-      return;
-    }
+    // if (!ableToCreateBot) {
+    //   navigate("/details");
+    //   return;
+    // }
 
-    if (!sallaStoreInfo || !merchantId) {
-      console.error("Missing store info or merchant ID");
-      return;
-    }
+    // if (!sallaStoreInfo || !merchantId) {
+    //   console.error("Missing store info or merchant ID");
+    //   return;
+    // }
 
     try {
       setIsCreating(true);
       navigate("/setup"); // show stepper immediately while creation runs
 
-      const result = await createSallaAgent({
-        ownerFirstName: sallaStoreInfo.activeAdminStoreUser.name?.split(" ")[0] || "",
-        ownerLastName: sallaStoreInfo.activeAdminStoreUser.name?.split(" ")[1] || "Salla",
-        ownerEmail: sallaStoreInfo.activeAdminStoreUser.email,
-        sallaStoreId: merchantId,
-        aiAgentName: sallaStoreInfo.merchant.name,
-        active: true,
-        metadata: {},
-        companyName: sallaStoreInfo.merchant.name,
-        companyCountry: sallaStoreInfo.merchant.kyc_country,
-        companyState: 'Saudi Arabia',
-      });
+      // const result = await createSallaAgent({
+      //   ownerFirstName: sallaStoreInfo.activeAdminStoreUser.name?.split(" ")[0]?.replace(/[^a-zA-Z\u0600-\u06FF]/g, "") || "",
+      //   ownerLastName: sallaStoreInfo.activeAdminStoreUser.name?.split(" ")[1]?.replace(/[^a-zA-Z\u0600-\u06FF]/g, "") || "Salla",
+      //   ownerEmail: sallaStoreInfo.activeAdminStoreUser.email,
+      //   sallaStoreId: merchantId,
+      //   aiAgentName: sallaStoreInfo.merchant.name,
+      //   active: true,
+      //   metadata: {},
+      //   companyName: sallaStoreInfo.merchant.name,
+      //   companyCountry: 'Saudi Arabia',
+      //   companyState: 'Mecca',
+      //   storefrontToken: token ?? "",
+      // });
 
-      if (!result?.success) {
-        console.error("createSallaAgent failed:", result?.error || result?.message);
-      }
+      // if (!result?.success) {
+      //   console.error("createSallaAgent failed:", result?.error || result?.message);
+      // }
     } catch (err) {
       console.error("Error creating Salla agent:", err);
     } finally {
@@ -155,7 +158,7 @@ function AIAgent() {
                   24/7 support, personalized shopping experiences, and more
                 </p>
               </div>
-              {ableToCreateBot && (
+              {true && (
                 <button
                   type="button"
                   className="cursor-pointer ai-agent__body__card__header-button inline-flex items-center justify-center rounded-lg bg-[var(--salla-secondary-color)] px-4 py-2 text-sm font-medium text-[var(--salla-light-mode-primary-color)] shadow-sm hover:bg-gray-800 transition"

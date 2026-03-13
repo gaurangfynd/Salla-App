@@ -27,16 +27,16 @@ async function introspectToken(token: string, appId: string | null) {
   return data;
 }
 
-async function fetchCanCreateAgent(merchantId: number, ownerEmail: string, token: string) {
-  const url = `${BACKEND_URL}/api/salla/canCreateAgent?merchantId=${merchantId}&ownerEmail=${encodeURIComponent(ownerEmail)}`;
+async function fetchCanCreateAgent(merchantId: string, ownerEmail: string, token: string) {
+  const url = `${BACKEND_URL}/api/salla/canCreateAgent?ownerEmail=${encodeURIComponent(ownerEmail)}`;
   const res = await fetchWithAuth(url, { method: "GET" }, { token, storeId: merchantId });
   const data = await res.json();
   console.log("canCreateAgent response", data);
   return data?.data?.canCreate === true;
 }
 
-async function fetchAppData(merchantId: number, ownerEmail: string, token: string) {
-  const url = `${BACKEND_URL}/api/salla/getApp?merchantId=${merchantId}&ownerEmail=${encodeURIComponent(ownerEmail)}`;
+async function fetchAppData(merchantId: string, ownerEmail: string, token: string) {
+  const url = `${BACKEND_URL}/api/salla/getApp?sallaStoreId=${merchantId}&ownerEmail=${encodeURIComponent(ownerEmail)}`;
   const res = await fetchWithAuth(url, { method: "GET" }, { token, storeId: merchantId });
   if (!res.ok) throw new Error(`getApp error: ${res.status} ${res.statusText}`);
   const data = await res.json();
@@ -44,8 +44,8 @@ async function fetchAppData(merchantId: number, ownerEmail: string, token: strin
   return data?.data ?? null;
 }
 
-async function fetchUsageData(merchantId: number, ownerEmail: string, token: string) {
-  const url = `${BACKEND_URL}/api/salla/getUsage?merchantId=${encodeURIComponent(merchantId)}&ownerEmail=${encodeURIComponent(ownerEmail)}`;
+async function fetchUsageData(merchantId: string, ownerEmail: string, token: string) {
+  const url = `${BACKEND_URL}/api/salla/getUsage?sallaStoreId=${encodeURIComponent(merchantId)}&ownerEmail=${encodeURIComponent(ownerEmail)}`;
   const res = await fetchWithAuth(url, { method: "GET" }, { token, storeId: merchantId });
   if (!res.ok) throw new Error(`getUsage error: ${res.status} ${res.statusText}`);
   const data = await res.json();
@@ -89,7 +89,7 @@ function App() {
     async function init() {
       try {
         // 1) Establish connection with Salla Dashboard
-        // await embedded.init({ debug: true });
+        await embedded.init({ debug: true });
 
         // 2) Try to get the short-lived session token from Salla
         const tokenValue = embedded.auth.getToken() || token;
@@ -103,7 +103,7 @@ function App() {
         
         if (introspectData.success) {
           embedded.ready();
-          setMerchantId(introspectData.data.data.merchant_id);
+          setMerchantId(introspectData.data.data.merchant_id.toString());
 
           // 4) Fetch and store Salla store/user info
           const storeInfo = await fetchSallaStoreInfo(tokenValue);
@@ -111,12 +111,18 @@ function App() {
             setSallaStoreInfo(storeInfo);
             console.log("salla store info set", storeInfo);
 
-            const merchantId = introspectData.data.data.merchant_id;
+            const merchantId = introspectData.data.data.merchant_id.toString();
             const ownerEmail = storeInfo.email;
 
             // 5) Check if merchant can create a new bot
             const canCreate = await fetchCanCreateAgent(merchantId, ownerEmail, tokenValue);
-            setAbleToCreateBot(canCreate);
+            if(canCreate === true){
+              setAbleToCreateBot(canCreate);
+            }
+            else{
+            // check if AI bot has been created 
+            }
+
             console.log("ableToCreateBot", canCreate);
 
             // 6) Fetch app data (copilot token etc.)

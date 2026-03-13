@@ -14,9 +14,10 @@ const BACKEND_URL = "http://localhost:3032";
 
 // ---------- update-copilot ----------
 async function updateCopilot(
-  payload: { merchantId: number; ownerEmail: string; data: Record<string, any> },
+  payload: { sallaStoreId: string; ownerEmail: string; data: Record<string, any> },
   token: string,
 ) {
+  console.log("payload:", payload)
   const res = await fetchWithAuth(
     `${BACKEND_URL}/api/salla/updateApp`,
     {
@@ -24,7 +25,7 @@ async function updateCopilot(
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     },
-    { token, storeId: payload.merchantId },
+    { token, storeId: payload.sallaStoreId },
   );
   if (!res.ok) {
     const text = await res.text().catch(() => "");
@@ -37,7 +38,7 @@ async function updateCopilot(
 
 // ---------- icon-init (get signed upload URL) ----------
 async function iconInit(
-  payload: { merchantId: number; ownerEmail: string; file_name: string; file_type: string; file_size: number },
+  payload: { sallaStoreId: string; ownerEmail: string; file_name: string; file_type: string; file_size: number },
   token: string,
 ) {
   const res = await fetchWithAuth(
@@ -47,7 +48,7 @@ async function iconInit(
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     },
-    { token, storeId: payload.merchantId },
+    { token, storeId: payload.sallaStoreId },
   );
   if (!res.ok) {
     const text = await res.text().catch(() => "");
@@ -911,7 +912,7 @@ export default function AiAgentDetails() {
     try {
       await updateCopilot(
         {
-          merchantId,
+          sallaStoreId: merchantId,
           ownerEmail: sallaStoreInfo.activeAdminStoreUser.email,
           data: payloadToSend,
         },
@@ -1063,7 +1064,7 @@ export default function AiAgentDetails() {
       // 1) Get signed upload URL from backend
       const initResponse = await iconInit(
         {
-          merchantId,
+          sallaStoreId: merchantId,
           ownerEmail: sallaStoreInfo.email,
           file_name: file.name,
           file_type: file.type,
@@ -1277,24 +1278,34 @@ export default function AiAgentDetails() {
                 <div className="relative">
                   <div className="h-14 w-14 overflow-hidden rounded-xl border border-gray-200 bg-white">
                     <img
-                      className="h-full w-full object-cover"
-                      src="https://cdn.shopify.com/s/files/1/0768/5410/0025/files/Bot_Logo-2.avif?v=1767817849"
+                      className="h-full w-full object-contain"
+                      src={
+                        iconPreviewUrl ||
+                        existingData?.data?.copilot?.icon ||
+                        "https://cdn.shopify.com/s/files/1/0768/5410/0025/files/Bot_Logo-2.avif?v=1767817849"
+                      }
                       alt="Agent avatar"
                     />
                   </div>
 
-                  <button
-                    type="button"
-                    className="absolute -bottom-2 right-1  flex  items-center gap-2 rounded-lg bg-gray-200 px-2 py-1 text-sm font-medium text-[var(--salla-primary-color)]   transition hover:text-white cursor-pointer"
-                    onClick={() => !iconUploading && triggerIconPicker()}
-                    disabled={iconUploading}
-                  >
-                    {iconUploading ? (
-                      <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-black" />
-                    ) : (
-                      <span className="text-sm leading-none">⬆</span>
-                    )}
-                  </button>
+                  <div className="group absolute -bottom-2 right-1">
+                    <button
+                      type="button"
+                      className="flex items-center gap-2 rounded-lg bg-gray-200 px-2 py-1 text-sm font-medium text-[var(--salla-primary-color)] transition hover:text-white cursor-pointer"
+                      onClick={() => !iconUploading && triggerIconPicker()}
+                      disabled={iconUploading}
+                    >
+                      {iconUploading ? (
+                        <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-black" />
+                      ) : (
+                        <span className="text-sm leading-none">⬆</span>
+                      )}
+                    </button>
+                    <div className="pointer-events-none absolute bottom-full left-1/2 mb-2 -translate-x-1/2 whitespace-nowrap rounded bg-[var(--salla-background-color)] px-2 py-1 text-xs text-[var(--salla-primary-color)] opacity-0 transition-opacity group-hover:opacity-100 border border-[var(--salla-border-color)]">
+                      Upload icon
+                      <span className="absolute left-1/2 top-full -translate-x-1/2 border-4 border-transparent " />
+                    </div>
+                  </div>
 
                   {/* hidden input */}
                   {/* hidden input */}
