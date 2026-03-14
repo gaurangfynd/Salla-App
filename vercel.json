@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://commerce-salla.sit.fcz0.de/api/:path*"
+      "destination": "https://commerce-salla.uat.fcz0.de/api/:path*"
     },
     {
       "source": "/(.*)",
