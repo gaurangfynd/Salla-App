@@ -54,14 +54,15 @@ async function fetchUsageData(merchantId: string, ownerEmail: string, token: str
   return data?.data ?? null;
 }
 
-async function fetchSallaStoreInfo(token: string) {
+async function fetchSallaStoreInfo(token: string, merchantId: string) {
   const res = await fetchWithAuth(
     `${BACKEND_URL}/api/salla/userInfo`,
     {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ token }),
-    }
+    },
+    { token, storeId: merchantId },
   );
   const data = await res.json();
   console.log("salla user info", data);
@@ -106,15 +107,15 @@ function App() {
         
         if (introspectData.success) {
           embedded.ready();
-          setMerchantId(introspectData.data.data.merchant_id.toString());
+          const merchantId = introspectData.data.data.merchant_id.toString();
+          setMerchantId(merchantId);
 
           // 4) Fetch and store Salla store/user info
-          const storeInfo = await fetchSallaStoreInfo(tokenValue);
+          const storeInfo = await fetchSallaStoreInfo(tokenValue, merchantId);
           if (storeInfo) {
             setSallaStoreInfo(storeInfo);
             console.log("salla store info set", storeInfo);
 
-            const merchantId = introspectData.data.data.merchant_id.toString();
             const ownerEmail = storeInfo.email;
 
             // 5) Check if merchant can create a new bot
