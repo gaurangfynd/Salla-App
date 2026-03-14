@@ -8,7 +8,7 @@ import { fetchWithAuth } from "../../utils/fetchWithAuth";
 import "./index.less";
 import { useSalla } from "../../context/salla-context";
 
-const BACKEND_URL = "http://localhost:3032";
+const BACKEND_URL = "";
 
 async function createSallaAgent(payload: {
   ownerFirstName: string;

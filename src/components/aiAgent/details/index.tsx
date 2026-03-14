@@ -10,7 +10,7 @@ import { embedded } from "@salla.sa/embedded-sdk";
 import { fetchWithAuth } from "../../../utils/fetchWithAuth";
 import { useSalla } from "../../../context/salla-context";
 
-const BACKEND_URL = "http://localhost:3032";
+const BACKEND_URL = "";
 
 // ---------- update-copilot ----------
 async function updateCopilot(
@@ -1460,7 +1460,7 @@ export default function AiAgentDetails() {
                 {/* Greeting */}
                 <div className="pt-1">
                   <h2 className="text-2xl font-semibold text-[var(--salla-primary-color)]">
-                    {existingData?.data?.copilot?.name || "Gaurang"}{" "}
+                    {existingData?.data?.copilot?.name || "Kaily User"}{" "}
                     <span className="align-middle">👋🏻</span>
                   </h2>
                   <p className="mt-1 text-sm text-[var(--salla-secondary-font-color)]">
