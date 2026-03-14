@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/api/:path*",
+      "destination": "https://commerce-salla.sit.fcz0.de/api/:path*"
+    },
+    {
       "source": "/(.*)",
       "destination": "/"
     }
