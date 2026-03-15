@@ -765,7 +765,7 @@ export default function AiAgentDetails() {
   //   }, [existingData]);
 
   useEffect(() => {
-    if (existingData?.data?.copilot?.token) {
+    if (existingData?.copilot?.token) {
       const existingScript = document.getElementById("copilot-script");
       if (existingScript) {
         window.oneClickCopilot?.("destroy");
@@ -803,7 +803,7 @@ export default function AiAgentDetails() {
 
     // Return empty cleanup function for the case when copilotToken is not available
     return () => { };
-  }, [existingData?.data?.copilot?.token, showSecondItem, copilotReloadKey]);
+  }, [existingData?.copilot?.token, showSecondItem, copilotReloadKey]);
 
   const openModal = () => {
     const btn = document.querySelector('s-button[commandFor="modal"]');
@@ -830,7 +830,7 @@ export default function AiAgentDetails() {
 
   //   const settingsFetcher = useFetcher<typeof action>();
 
-  const copilotFromServer = existingData?.data?.copilot || null;
+  const copilotFromServer = existingData?.copilot || null;
 
   const [draftCopilot, setDraftCopilot] = useState<any>(copilotFromServer);
 
@@ -1416,7 +1416,7 @@ export default function AiAgentDetails() {
                       className="h-full w-full object-contain"
                       src={
                         iconPreviewUrl ||
-                        existingData?.data?.copilot?.icon ||
+                        existingData?.copilot?.icon ||
                         "https://cdn.shopify.com/s/files/1/0768/5410/0025/files/Bot_Logo-2.avif?v=1767817849"
                       }
                       alt="Agent avatar"
@@ -1460,7 +1460,7 @@ export default function AiAgentDetails() {
                 {/* Greeting */}
                 <div className="pt-1">
                   <h2 className="text-2xl font-semibold text-[var(--salla-primary-color)]">
-                    {existingData?.data?.copilot?.name || "Kaily User"}{" "}
+                    {existingData?.copilot?.name || "Kaily User"}{" "}
                     <span className="align-middle">👋🏻</span>
                   </h2>
                   <p className="mt-1 text-sm text-[var(--salla-secondary-font-color)]">
