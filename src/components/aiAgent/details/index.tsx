@@ -684,7 +684,7 @@ export default function AiAgentDetails() {
 
   // Salla equivalent of Shopify's useLoaderData
   const existingData = appData ?? null;
-  const usage = (usageData as any)?.data?.usage ?? {};
+  const usage = (usageData as any)?.usage ?? {};
 
 
   console.log("Existing Data:", existingData);
