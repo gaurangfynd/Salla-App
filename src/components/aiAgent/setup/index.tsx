@@ -4,9 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../index.less";
 import "./index.css";
-import { set } from "react-hook-form";
-import { fetchAppData } from "../../../utils/sallaApi";
-import { fetchUsageData, fetchUsageData } from "../../../utils/sallaApi";
+import { fetchUsageData, fetchAppData } from "../../../utils/sallaApi";
 import { useSalla } from "../../../context/salla-context";
 
 const AIAgentSetup = () => {
