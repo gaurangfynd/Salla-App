@@ -16,7 +16,7 @@ export async function fetchWithAuth(
   input: RequestInfo,
   init?: RequestInit,
   { token, storeId }: FetchWithAuthOptions = {},
-): Promise<Response> {
+): Promise<Response>  {
   const headers = new Headers(init?.headers);
 
   if (token) {

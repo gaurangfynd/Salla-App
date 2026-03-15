@@ -10,31 +10,10 @@ import { useSalla } from "../../context/salla-context";
 
 const BACKEND_URL = "";
 
-async function createSallaAgent(payload: {
-  ownerFirstName: string;
-  ownerLastName: string;
-  ownerEmail: string;
-  sallaStoreId: string;
-  aiAgentName: string;
-  active?: boolean;
-  companyName: string;
-  companyCountry: string;
-  companyState: string;
-  storefrontToken: string;
-  metadata: Record<string, any>;
-}): Promise<any> {
-  const res = await fetchWithAuth(`${BACKEND_URL}/api/salla/createApp`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload),
-  });
-  const data = await res.json();
-  console.log("createSallaAgent response", data);
-  return data;
-}
+
 
 function AIAgent() {
-  const {appId, token, locale, dark } = useSalla();
+  const { appId, token, locale, dark, accessToken } = useSalla();
   const navigate = useNavigate();
   const { ableToCreateBot, sallaStoreInfo, merchantId } = useSalla();
   const [isReadyForSetup, setIsReadyForSetup] = useState(false);
@@ -48,6 +27,30 @@ function AIAgent() {
     aiAgentLimit?: number;
     aiAgentCount?: number;
   } | null>(null);
+
+  async function createSallaAgent(payload: {
+    ownerFirstName: string;
+    ownerLastName: string;
+    ownerEmail: string;
+    sallaStoreId: string;
+    aiAgentName: string;
+    active?: boolean;
+    companyName: string;
+    companyCountry: string;
+    companyState: string;
+    storefrontToken: string;
+    metadata: Record<string, any>;
+  }): Promise<any> {
+    const res = await fetchWithAuth(`${BACKEND_URL}/api/salla/createApp`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    },
+      { token: accessToken, storeId: merchantId });
+    const data = await res.json();
+    console.log("createSallaAgent response", data);
+    return data;
+  }
 
   const handleCheckPricing = useCallback(() => {
     openWindow(
@@ -88,37 +91,37 @@ function AIAgent() {
   };
 
   const handleSetupRedirection = async () => {
-    // if (!ableToCreateBot) {
-    //   navigate("/details");
-    //   return;
-    // }
+    if (!ableToCreateBot) {
+      navigate("/details");
+      return;
+    }
 
-    // if (!sallaStoreInfo || !merchantId) {
-    //   console.error("Missing store info or merchant ID");
-    //   return;
-    // }
+    if (!sallaStoreInfo || !merchantId) {
+      console.error("Missing store info or merchant ID");
+      return;
+    }
 
     try {
       setIsCreating(true);
       navigate("/setup"); // show stepper immediately while creation runs
 
-      // const result = await createSallaAgent({
-      //   ownerFirstName: sallaStoreInfo.activeAdminStoreUser.name?.split(" ")[0]?.replace(/[^a-zA-Z\u0600-\u06FF]/g, "") || "",
-      //   ownerLastName: sallaStoreInfo.activeAdminStoreUser.name?.split(" ")[1]?.replace(/[^a-zA-Z\u0600-\u06FF]/g, "") || "Salla",
-      //   ownerEmail: sallaStoreInfo.activeAdminStoreUser.email,
-      //   sallaStoreId: merchantId,
-      //   aiAgentName: sallaStoreInfo.merchant.name,
-      //   active: true,
-      //   metadata: {},
-      //   companyName: sallaStoreInfo.merchant.name,
-      //   companyCountry: 'Saudi Arabia',
-      //   companyState: 'Mecca',
-      //   storefrontToken: token ?? "",
-      // });
+      const result = await createSallaAgent({
+        ownerFirstName: sallaStoreInfo.activeAdminStoreUser.name?.split(" ")[0]?.replace(/[^a-zA-Z\u0600-\u06FF]/g, "") || "",
+        ownerLastName: sallaStoreInfo.activeAdminStoreUser.name?.split(" ")[1]?.replace(/[^a-zA-Z\u0600-\u06FF]/g, "") || "Salla",
+        ownerEmail: sallaStoreInfo.activeAdminStoreUser.email,
+        sallaStoreId: merchantId,
+        aiAgentName: sallaStoreInfo.merchant.name,
+        active: true,
+        metadata: {},
+        companyName: sallaStoreInfo.merchant.name,
+        companyCountry: 'Saudi Arabia',
+        companyState: 'Mecca',
+        storefrontToken: accessToken ?? "",
+      });
 
-      // if (!result?.success) {
-      //   console.error("createSallaAgent failed:", result?.error || result?.message);
-      // }
+      if (!result?.success) {
+        console.error("createSallaAgent failed:", result?.error || result?.message);
+      }
     } catch (err) {
       console.error("Error creating Salla agent:", err);
     } finally {
