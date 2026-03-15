@@ -1088,11 +1088,11 @@ export default function AiAgentDetails() {
         token ?? "",
       );
 
-      if (!initResponse?.ok) {
-        throw new Error(initResponse?.error || "Icon init failed");
+      if (!initResponse?.data?.success) {
+        throw new Error(initResponse?.data?.error || "Icon init failed");
       }
 
-      const signed = initResponse?.signed?.data;
+      const signed = initResponse?.data?.data;
       const { method = "PUT", url, fields, cdn_path } = signed || {};
 
       if (!url || !cdn_path) {
