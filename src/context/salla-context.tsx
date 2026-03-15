@@ -78,6 +78,8 @@ type SallaContextValue = {
   dark: boolean;
   merchantId: string | null;
   setMerchantId: (id: string) => void;
+  accessToken: string;
+  setAccessToken: (token: string) => void;
   sallaStoreInfo: SallaStoreInfo | null;
   setSallaStoreInfo: (info: SallaStoreInfo) => void;
   ableToCreateBot: boolean;
@@ -105,6 +107,7 @@ type SallaProviderProps = {
 type SallaParams = Omit<
   SallaContextValue,
   | "merchantId" | "setMerchantId"
+  | "accessToken" | "setAccessToken"
   | "sallaStoreInfo" | "setSallaStoreInfo"
   | "ableToCreateBot" | "setAbleToCreateBot"
   | "appData" | "setAppData"
@@ -129,6 +132,7 @@ export const SallaProvider: React.FC<SallaProviderProps> = ({ children }) => {
   // are available immediately when child components read the context.
   const [params] = useState<SallaParams>(parseSallaParams);
   const [merchantId, setMerchantId] = useState<string | null>(null);
+  const [accessToken, setAccessToken] = useState<string>("");
   const [sallaStoreInfo, setSallaStoreInfo] = useState<SallaStoreInfo | null>(null);
   const [ableToCreateBot, setAbleToCreateBot] = useState<boolean>(false);
   const [appData, setAppData] = useState<SallaAppData | null>(null);
@@ -140,6 +144,8 @@ export const SallaProvider: React.FC<SallaProviderProps> = ({ children }) => {
         ...params,
         merchantId,
         setMerchantId,
+        accessToken,
+        setAccessToken,
         sallaStoreInfo,
         setSallaStoreInfo,
         ableToCreateBot,
