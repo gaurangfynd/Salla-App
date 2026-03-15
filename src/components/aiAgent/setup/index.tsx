@@ -5,6 +5,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import "../index.less";
 import "./index.css";
 import { set } from "react-hook-form";
+import { fetchAppData } from "../../../utils/sallaApi";
+import { fetchUsageData, fetchUsageData } from "../../../utils/sallaApi";
+import { useSalla } from "../../../context/salla-context";
 
 const AIAgentSetup = () => {
   const navigate = useNavigate();
@@ -12,6 +15,8 @@ const AIAgentSetup = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [isCommerceDataPushed, setIsCommerceDataPushed] = useState(false);
   const [createdAIAgent, setCreatedAIAgent] = useState<any>(null);
+
+  const { setAppData, setUsageData, accessToken, sallaStoreInfo, merchantId, agentData } = useSalla();
 
   const product_type = "boltic";
 
@@ -105,6 +110,23 @@ const AIAgentSetup = () => {
   //   }
   // }, [steps, createdAIAgent, navigate]);
 
+
+  useEffect(() => {
+    async function fetchData() {
+      const ownerEmail = sallaStoreInfo?.email;
+      const tokenValue = accessToken;
+      const app = await fetchAppData(merchantId || "", ownerEmail || "", tokenValue || "");
+      if (app) setAppData(app);
+
+      // 7) Fetch usage data
+      const usage = await fetchUsageData(merchantId || "", ownerEmail || "", tokenValue || "");
+      if (usage) setUsageData(usage);
+    }
+    if(agentData?.id) {
+      fetchData();
+    }
+  }, [merchantId, accessToken, sallaStoreInfo, agentData]);
+
   return (
     <main className="ai-agent">
       <section className="ai-agent__body py-5">
@@ -131,7 +153,7 @@ const AIAgentSetup = () => {
           <div className="ai-agent__body__card__body">
             <Stepper steps={steps} />
           </div>
-          <hr  className="border-[var(--salla-border-color)]"/>
+          <hr className="border-[var(--salla-border-color)]" />
           <div className="ai-agent__body__card__footer">
             <p className="ai-agent__body__card__footer-note text-sm text-[var(--salla-secondary-font-color)]">
               Note: You'll be auto-redirected to next screen once setup is complete. This may take upto 1 minute.

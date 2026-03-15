@@ -71,6 +71,13 @@ type SallaUsageData = {
   [key: string]: any;
 };
 
+type SallaAgentData = {
+  id: string;
+  token: string;
+  name: string;
+  icon: string;
+};
+
 type SallaContextValue = {
   locale: string | null;
   token: string | null;
@@ -88,6 +95,8 @@ type SallaContextValue = {
   setAppData: (data: SallaAppData) => void;
   usageData: SallaUsageData | null;
   setUsageData: (data: SallaUsageData) => void;
+  agentData: SallaAgentData | null;
+  setAgentData: (data: SallaAgentData) => void;
 };
 
 const SallaContext = createContext<SallaContextValue | undefined>(undefined);
@@ -112,6 +121,7 @@ type SallaParams = Omit<
   | "ableToCreateBot" | "setAbleToCreateBot"
   | "appData" | "setAppData"
   | "usageData" | "setUsageData"
+  | "agentData" | "setAgentData"
 >;
 
 const parseSallaParams = (): SallaParams => {
@@ -137,6 +147,7 @@ export const SallaProvider: React.FC<SallaProviderProps> = ({ children }) => {
   const [ableToCreateBot, setAbleToCreateBot] = useState<boolean>(false);
   const [appData, setAppData] = useState<SallaAppData | null>(null);
   const [usageData, setUsageData] = useState<SallaUsageData | null>(null);
+  const [agentData, setAgentData] = useState<SallaAgentData | null>(null);
 
   return (
     <SallaContext.Provider
@@ -154,6 +165,8 @@ export const SallaProvider: React.FC<SallaProviderProps> = ({ children }) => {
         setAppData,
         usageData,
         setUsageData,
+        agentData,
+        setAgentData,
       }}
     >
       {children}

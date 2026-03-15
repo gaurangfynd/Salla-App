@@ -650,7 +650,7 @@ const THEMES: Record<string, any> = {
 // ========================= Component =========================
 export default function AiAgentDetails() {
   const navigate = useNavigate();
-  const { merchantId, sallaStoreInfo, appData, usageData, ableToCreateBot, token } = useSalla();
+  const { merchantId, sallaStoreInfo, appData, usageData, ableToCreateBot, accessToken: token } = useSalla();
 
   const [iconUploading, setIconUploading] = useState(false);
   const [iconError, setIconError] = useState<string>("");

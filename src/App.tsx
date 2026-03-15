@@ -8,95 +8,13 @@ import AiAgentDetails from "./components/aiAgent/details";
 import { useRef, useEffect } from "react";
 import { embedded } from "@salla.sa/embedded-sdk";
 import { useSalla } from "./context/salla-context";
-import { fetchWithAuth } from "./utils/fetchWithAuth";
-
-const BACKEND_URL = "";
-
-// introspect has no storeId yet (it IS the auth step that gives us the storeId)
-async function introspectToken(token: string, appId: string | null) {
-  try {
-    console.log("in interospect");
-    const res = await fetchWithAuth(
-      `${BACKEND_URL}/api/salla/introspect`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token, appId }),
-      },
-    );
-    const data = await res.json();
-    console.log("data from introspect api", data);
-    return data;
-  } catch (err) {
-    console.error("introspectToken failed:", err);
-    return null;
-  }
-}
-
-async function fetchCanCreateAgent(merchantId: string, ownerEmail: string, token: string) {
-  try {
-    const url = `${BACKEND_URL}/api/salla/canCreateAgent?ownerEmail=${encodeURIComponent(ownerEmail)}`;
-    const res = await fetchWithAuth(url, { method: "GET" }, { token, storeId: merchantId });
-    const data = await res.json();
-    console.log("canCreateAgent response", data);
-    return data?.data?.canCreate === true;
-  } catch (err) {
-    console.error("fetchCanCreateAgent failed:", err);
-    return false;
-  }
-}
-
-async function fetchAppData(merchantId: string, ownerEmail: string, token: string) {
-  try {
-    const url = `${BACKEND_URL}/api/salla/getApp?sallaStoreId=${merchantId}&ownerEmail=${encodeURIComponent(ownerEmail)}`;
-    const res = await fetchWithAuth(url, { method: "GET" }, { token, storeId: merchantId });
-    if (!res.ok) throw new Error(`getApp error: ${res.status} ${res.statusText}`);
-    const data = await res.json();
-    console.log("appData response", data);
-    return data?.data ?? null;
-  } catch (err) {
-    console.error("fetchAppData failed:", err);
-    return null;
-  }
-}
-
-async function fetchUsageData(merchantId: string, ownerEmail: string, token: string) {
-  try {
-    const url = `${BACKEND_URL}/api/salla/getUsage?sallaStoreId=${encodeURIComponent(merchantId)}&ownerEmail=${encodeURIComponent(ownerEmail)}`;
-    const res = await fetchWithAuth(url, { method: "GET" }, { token, storeId: merchantId });
-    if (!res.ok) throw new Error(`getUsage error: ${res.status} ${res.statusText}`);
-    const data = await res.json();
-    console.log("usageData response", data);
-    return data?.data ?? null;
-  } catch (err) {
-    console.error("fetchUsageData failed:", err);
-    return null;
-  }
-}
-
-async function fetchSallaStoreInfo(token: string, merchantId: string) {
-  try {
-    const res = await fetchWithAuth(
-      `${BACKEND_URL}/api/salla/userInfo`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token }),
-      },
-      { token, storeId: merchantId },
-    );
-    const data = await res.json();
-    console.log("salla user info", data);
-    if (!data?.success || !data?.data?.data) return null;
-    return {
-      ...data.data.data,
-      activeAdminStoreUser: data.data.activeAdminStoreUser ?? null,
-    };
-  } catch (err) {
-    console.error("fetchSallaStoreInfo failed:", err);
-    return null;
-  }
-}
+import {
+  introspectToken,
+  fetchCanCreateAgent,
+  fetchAppData,
+  fetchUsageData,
+  fetchSallaStoreInfo,
+} from "./utils/sallaApi";
 
 function App() {
   const initialized = useRef(false);

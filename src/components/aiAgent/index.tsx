@@ -13,7 +13,7 @@ const BACKEND_URL = "";
 
 
 function AIAgent() {
-  const { appId, token, locale, dark, accessToken } = useSalla();
+  const { appId, token, locale, dark, accessToken, setAgentData } = useSalla();
   const navigate = useNavigate();
   const { ableToCreateBot, sallaStoreInfo, merchantId } = useSalla();
   const [isReadyForSetup, setIsReadyForSetup] = useState(false);
@@ -119,8 +119,12 @@ function AIAgent() {
         storefrontToken: accessToken ?? "",
       });
 
-      if (!result?.success) {
+      if (!result?.data?.success) {
         console.error("createSallaAgent failed:", result?.error || result?.message);
+      }
+
+      if(result?.data?.success && result?.data?.data) {
+        setAgentData(result?.data?.data);
       }
     } catch (err) {
       console.error("Error creating Salla agent:", err);
