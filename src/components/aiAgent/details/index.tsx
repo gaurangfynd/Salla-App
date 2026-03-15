@@ -781,8 +781,9 @@ export default function AiAgentDetails() {
         script.type = "application/javascript";
 
         // Set the script content using the format provided
+
         script.innerHTML = `
-              (function(w,d,s,o,f,js,fjs){w[o]=w[o]||function(){(w[o].q=w[o].q||[]).push(arguments);};(js=d.createElement(s)),(fjs=d.getElementsByTagName(s)[0]);js.id=o;js.src=f;js.async=1;fjs.parentNode.insertBefore(js,fjs);})(window,document,"script","oneClickCopilot", "https://script.copilot.live/v1/copilot.min.js?tkn=${existingData.copilot.token}&region=asia-south1");
+              (function(w,d,s,o,f,js,fjs){w[o]=w[o]||function(){(w[o].q=w[o].q||[]).push(arguments);};(js=d.createElement(s)),(fjs=d.getElementsByTagName(s)[0]);js.id=o;js.src=f;js.async=1;js.referrerPolicy = "origin";fjs.parentNode.insertBefore(js,fjs);})(window,document,"script","oneClickCopilot", "https://script.copilot.live/v1/copilot.min.js?tkn=${existingData.copilot.token}&region=asia-south1");
               oneClickCopilot("init",{element: "copilot-container"});
               `;
 
@@ -919,6 +920,12 @@ export default function AiAgentDetails() {
         token ?? "",
       );
       setBaselineCopilot(structuredClone(draftCopilot));
+
+      // Clear icon preview and pending path after successful save
+      if (iconPreviewUrl) URL.revokeObjectURL(iconPreviewUrl);
+      setIconPreviewUrl("");
+      setPendingIconCdnPath("");
+
       console.log("Copilot updated successfully");
     } catch (err) {
       console.error("updateCopilot failed:", err);
@@ -1092,28 +1099,12 @@ export default function AiAgentDetails() {
         throw new Error("Missing signed URL or cdn_path from icon init");
       }
 
-      // 2) Upload the file directly to the signed URL
-      if (fields) {
-        // Multipart / S3-style POST
-        const uploadForm = new FormData();
-        Object.entries(fields).forEach(([k, v]) =>
-          uploadForm.append(k, v as string),
-        );
-        uploadForm.append("file", file);
-        await fetch(url, { method: "POST", body: uploadForm });
-      } else {
-        // Simple PUT
-        await fetch(url, {
-          method,
-          headers: { "Content-Type": file.type },
-          body: file,
-        });
-      }
+      // 2) Upload via Pixelbin SDK
+      await Pixelbin.upload(file, { url, fields });
 
-      // 3) Store the cdn_path so it's included in the next save
-      const localUrl = URL.createObjectURL(file);
-      setIconPreviewUrl(localUrl);
+      // 3) Store cdn_path for next save and sync into draft
       setPendingIconCdnPath(cdn_path);
+      updateDraft(["icon"], cdn_path);
       console.log("Icon uploaded, cdn_path:", cdn_path);
     } catch (err) {
       console.error("Icon upload failed:", err);
@@ -1129,69 +1120,6 @@ export default function AiAgentDetails() {
     };
   }, [iconPreviewUrl]);
 
-  //   useEffect(() => {
-  //     // if (iconInitFetcher.state !== "idle") return;
-  //     if (!iconUploading) return;
-
-  //     const data: any = iconInitFetcher.data;
-  //     if (!data?.ok) {
-  //       setIconUploading(false);
-  //       const msg = data?.error || "Init failed";
-  //       setIconError(msg);
-  //       //   shopify.toast.show(msg);
-  //       return;
-  //     }
-
-  //     const signed = data?.signed?.data;
-  //     const { url, fields, cdn_path } = signed || {};
-  //     if (!url || !cdn_path) {
-  //       setIconUploading(false);
-  //       //   shopify.toast.show("Signed response missing url/cdn_path");
-  //       return;
-  //     }
-
-  //     (async () => {
-  //       try {
-  //         if (!pickedFile) throw new Error("No file selected");
-
-  //         // ✅ wait for upload to finish
-  //         await Pixelbin.upload(pickedFile, { url, fields });
-
-  //         // ✅ ONLY store cdn_path for later save
-  //         setPendingIconCdnPath(cdn_path);
-
-  //         // Optional: also keep in draft (but preview will still override)
-  //         updateDraft(["icon"], cdn_path);
-
-  //         shopify.toast.show("Uploaded. Click Save to apply.");
-  //       } catch (e: any) {
-  //         const msg = e?.message || "Upload failed";
-  //         setIconError(msg);
-  //         shopify.toast.show(msg);
-
-  //         // if upload fails, remove preview too (optional UX)
-  //         setIconPreviewUrl("");
-  //         setPendingIconCdnPath("");
-  //       } finally {
-  //         setIconUploading(false);
-  //         setPickedFile(null);
-  //       }
-  //     })();
-  //   }, [iconInitFetcher.state, iconInitFetcher.data]);
-
-  //   useEffect(() => {
-  //     if (settingsFetcher.state !== "idle") return;
-  //     const d: any = settingsFetcher.data;
-  //     if (d?.ok) {
-  //       // ✅ remove optimistic preview
-  //       if (iconPreviewUrl) URL.revokeObjectURL(iconPreviewUrl);
-  //       setIconPreviewUrl("");
-  //       setPendingIconCdnPath("");
-
-  //       // ✅ refresh loader so existingData.copilot.icon updated shows
-  //       revalidator.revalidate();
-  //     }
-  //   }, [settingsFetcher.state]);
 
   useEffect(() => {
     const modal = document.getElementById("modal") as HTMLElement | null;
