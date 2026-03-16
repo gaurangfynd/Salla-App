@@ -9,7 +9,7 @@ import Pixelbin from "@pixelbin/core";
 import { embedded } from "@salla.sa/embedded-sdk";
 import { fetchWithAuth } from "../../../utils/fetchWithAuth";
 import { useSalla } from "../../../context/salla-context";
-
+import { fetchAppData } from "../../../utils/sallaApi";
 const BACKEND_URL = "";
 
 // ---------- update-copilot ----------
@@ -650,7 +650,7 @@ const THEMES: Record<string, any> = {
 // ========================= Component =========================
 export default function AiAgentDetails() {
   const navigate = useNavigate();
-  const { merchantId, sallaStoreInfo, appData, usageData, ableToCreateBot, accessToken: token } = useSalla();
+  const { merchantId, sallaStoreInfo, appData, usageData, ableToCreateBot, accessToken: token, setAppData } = useSalla();
 
   const [iconUploading, setIconUploading] = useState(false);
   const [iconError, setIconError] = useState<string>("");
@@ -920,7 +920,9 @@ export default function AiAgentDetails() {
         token ?? "",
       );
       setBaselineCopilot(structuredClone(draftCopilot));
-
+      const ownerEmail = sallaStoreInfo.activeAdminStoreUser.email;
+      const app = await fetchAppData(merchantId, ownerEmail, token || "");
+      if (app) setAppData(app);
       // Clear icon preview and pending path after successful save
       if (iconPreviewUrl) URL.revokeObjectURL(iconPreviewUrl);
       setIconPreviewUrl("");
