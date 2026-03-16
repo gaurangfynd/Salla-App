@@ -151,7 +151,7 @@ export const SallaProvider: React.FC<SallaProviderProps> = ({ children }) => {
   const [merchantId, setMerchantId] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState<string>("");
   const [sallaStoreInfo, setSallaStoreInfo] = useState<SallaStoreInfo | null>(null);
-  const [ableToCreateBot, setAbleToCreateBot] = useState<boolean>(false);
+  const [ableToCreateBot, setAbleToCreateBot] = useState<boolean>(true);
   const [appData, setAppData] = useState<SallaAppData | null>(null);
   const [usageData, setUsageData] = useState<SallaUsageData | null>(null);
   const [agentData, setAgentData] = useState<SallaAgentData | null>(null);
