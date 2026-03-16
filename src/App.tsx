@@ -25,8 +25,7 @@ function App() {
     setSallaStoreInfo,
     setAbleToCreateBot,
     setAppData,
-    setUsageData,
-    ableToCreateBot,
+    setUsageData
   } = useSalla();
 
   useEffect(() => {
@@ -41,7 +40,7 @@ function App() {
 
         // 2) Try to get the short-lived session token from Salla
         //  let tokenValue = embedded.auth.getToken() || token;
-        let tokenValue = embedded.auth.getToken();
+        let tokenValue = embedded.auth.getToken() || token;
         console.log("tokenValue", tokenValue, typeof appId, appId);
         if (!tokenValue) {
           return;

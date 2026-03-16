@@ -81,6 +81,7 @@ type SallaAgentData = {
 type SallaContextValue = {
   locale: string | null;
   token: string | null;
+  setToken: (token: string) => void;
   appId: string | null;
   dark: boolean;
   merchantId: string | null;
@@ -115,6 +116,7 @@ type SallaProviderProps = {
 
 type SallaParams = Omit<
   SallaContextValue,
+  | "token" | "setToken"
   | "merchantId" | "setMerchantId"
   | "accessToken" | "setAccessToken"
   | "sallaStoreInfo" | "setSallaStoreInfo"
@@ -126,21 +128,26 @@ type SallaParams = Omit<
 
 const parseSallaParams = (): SallaParams => {
   if (typeof window === "undefined") {
-    return { locale: null, token: null, appId: null, dark: false };
+    return { locale: null, appId: null, dark: false };
   }
   const params = new URLSearchParams(window.location.search);
   return {
     locale: params.get("locale"),
-    token: params.get("token"),
     appId: params.get("app_id"),
     dark: params.get("dark") === "true",
   };
+};
+
+const parseInitialToken = (): string | null => {
+  if (typeof window === "undefined") return null;
+  return new URLSearchParams(window.location.search).get("token");
 };
 
 export const SallaProvider: React.FC<SallaProviderProps> = ({ children }) => {
   // Lazy initializer: runs synchronously before first render, so all values
   // are available immediately when child components read the context.
   const [params] = useState<SallaParams>(parseSallaParams);
+  const [token, setToken] = useState<string | null>(parseInitialToken);
   const [merchantId, setMerchantId] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState<string>("");
   const [sallaStoreInfo, setSallaStoreInfo] = useState<SallaStoreInfo | null>(null);
@@ -153,6 +160,8 @@ export const SallaProvider: React.FC<SallaProviderProps> = ({ children }) => {
     <SallaContext.Provider
       value={{
         ...params,
+        token,
+        setToken,
         merchantId,
         setMerchantId,
         accessToken,
