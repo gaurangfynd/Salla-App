@@ -56,8 +56,8 @@ function App() {
           console.log("merchantId", merchantId);
           setMerchantId(merchantId);
           console.log("introspectData.data.token_details.access_token", introspectData?.data?.token_details?.access_token);
-          setAccessToken(introspectData?.data?.token_details?.access_token || "ory_at_72thsuy4XCjxxxDtinXuqXgAFUJL0SO5NPnYY7yDHaE.hS7L4OTizpcQlo2Ba8aoPifj-9ggdrPBL4IU6lOmMhk");
-          tokenValue = introspectData?.data?.token_details?.access_token || "ory_at_72thsuy4XCjxxxDtinXuqXgAFUJL0SO5NPnYY7yDHaE.hS7L4OTizpcQlo2Ba8aoPifj-9ggdrPBL4IU6lOmMhk";
+          setAccessToken(introspectData?.data?.token_details?.access_token || "");
+          tokenValue = introspectData?.data?.token_details?.access_token || "";
           console.log("tokenValue", tokenValue);
 
           // 4) Fetch and store Salla store/user info
@@ -75,7 +75,6 @@ function App() {
             }
             else {
               // check if AI bot has been created 
-              setAbleToCreateBot(false);
             }
 
             console.log("ableToCreateBot", canCreate);
