@@ -6,6 +6,7 @@ import "../index.less";
 import "./index.css";
 import { fetchUsageData, fetchAppData } from "../../../utils/sallaApi";
 import { useSalla } from "../../../context/salla-context";
+import { embedded } from "@salla.sa/embedded-sdk";
 
 const AIAgentSetup = () => {
   const navigate = useNavigate();
@@ -89,24 +90,24 @@ const AIAgentSetup = () => {
       // const applicationData = companyApplicationData?.find(
       //     (val: any) => val?._id === applicationId,
       // );
-      setTimeout(() => {
-        navigate(`/details`);
-      }, 4000);
+   
     }
   }, []);
 
-  /**
-   * Step 5: Navigate to AI Agent details page after creation
-   *
-   * Once the AI Agent is successfully created and all steps are completed,
-   * navigates to the AI Agent details page with a query parameter indicating
-   * the user came from the setup flow.
-   */
-  // useEffect(() => {
-  //   if (steps[2].completed && createdAIAgent?.id) {
-  //     navigate(`../${createdAIAgent.id}?fromSetup=true`);
-  //   }
-  // }, [steps, createdAIAgent, navigate]);
+ 
+  useEffect(() => {
+    if (steps[2].completed && agentData?.id) {
+      setTimeout(() => {
+        navigate(`/details`);
+      }, 2000);
+    }
+    else {
+      setTimeout(() => {
+        embedded.ui.toast.error("Failed to create AI Agent");
+        navigate(`/`);
+      }, 2000);
+    }
+  }, [steps, agentData, navigate]);
 
 
   useEffect(() => {
