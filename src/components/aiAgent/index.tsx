@@ -1,6 +1,6 @@
 import SVGLoader from "../../common/svgLoader";
 import { aiProviders, benefits, channels } from "../../constants/aiAgent";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { openWindow } from "../../utils/browser";
@@ -27,6 +27,13 @@ function AIAgent() {
     aiAgentLimit?: number;
     aiAgentCount?: number;
   } | null>(null);
+
+
+  useEffect(() => {
+    if(!ableToCreateBot) {
+      navigate("/details");
+    }
+  }, [ableToCreateBot]);
 
   async function createSallaAgent(payload: {
     ownerFirstName: string;

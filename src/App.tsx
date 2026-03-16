@@ -15,11 +15,9 @@ import {
   fetchUsageData,
   fetchSallaStoreInfo,
 } from "./utils/sallaApi";
-import { useNavigate } from "react-router-dom";
 
 function App() {
   const initialized = useRef(false);
-  const navigate = useNavigate();
   const {
     appId, token, locale, dark,
     setMerchantId,
@@ -101,11 +99,7 @@ function App() {
     init();
   }, [appId, token]);
 
-  useEffect(() => {
-    if(!ableToCreateBot) {
-      navigate("/details");
-    }
-  }, [ableToCreateBot]);
+
 
   console.log("initialized details", initialized.current);
   return (
