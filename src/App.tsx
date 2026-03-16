@@ -75,6 +75,7 @@ function App() {
             }
             else {
               // check if AI bot has been created 
+              setAbleToCreateBot(false);
             }
 
             console.log("ableToCreateBot", canCreate);
