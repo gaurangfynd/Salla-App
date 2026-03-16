@@ -974,13 +974,6 @@ export default function AiAgentDetails() {
     return JSON.stringify(draftCopilot) !== JSON.stringify(baselineCopilot);
   }, [draftCopilot, baselineCopilot]);
 
-  //   useEffect(() => {
-  //     if (isDirty) {
-  //       shopify.saveBar.show("save-bar");
-  //     } else {
-  //       shopify.saveBar.hide("save-bar");
-  //     }
-  //   }, [isDirty, shopify]);
 
   const [isSaving, setIsSaving] = useState(false);
 
