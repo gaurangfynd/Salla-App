@@ -16,6 +16,9 @@ import {
   fetchSallaStoreInfo,
 } from "./utils/sallaApi";
 
+
+
+
 function App() {
   const initialized = useRef(false);
   const {
@@ -107,9 +110,9 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<AIAgent />} />
-        <Route path="/setup" element={<AIAgentSetup />} />
+        {/* <Route path="/setup" element={<AIAgentSetup />} />
         <Route path="/details" element={<AiAgentDetails />} />
-        <Route path="*" element={<AIAgent />} />
+        <Route path="*" element={<AIAgent />} /> */}
       </Routes>
     </BrowserRouter>
 

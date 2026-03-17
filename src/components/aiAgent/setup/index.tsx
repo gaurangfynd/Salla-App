@@ -101,12 +101,6 @@ const AIAgentSetup = () => {
         navigate(`/details`);
       }, 2000);
     }
-    else {
-      setTimeout(() => {
-        embedded.ui.toast.error("Failed to create AI Agent");
-        navigate(`/`);
-      }, 2000);
-    }
   }, [steps, agentData, navigate]);
 
 
