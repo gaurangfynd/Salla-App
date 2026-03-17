@@ -254,7 +254,7 @@ function AIAgent() {
 
 
   useEffect(() => {
-    if (!ableToCreateBot) {
+    if (!ableToCreateBot && appData) {
       setCurrentStep(3);
     }
   }, [ableToCreateBot]);
