@@ -192,10 +192,9 @@ function AIAgent() {
   useEffect(() => {
     if (appData) {
       setExistingData(appData);
-      setCurrentStep(3);
     }
     
-  }, [currentStep, appData]);
+  }, [appData]);
 
 
   async function fetchData() {
@@ -209,6 +208,14 @@ function AIAgent() {
     const usage = await fetchUsageData(merchantId || "", ownerEmail || "", tokenValue || "");
     if (usage) setUsageData(usage);
   }
+
+  useEffect(() => {
+    console.log("currentStep", currentStep);
+    if(currentStep === 3) {
+      console.log("currentsetep fetchData");
+      fetchData();
+    }
+  }, [currentStep]);
 
 
   //console.log("Loader Data -->:", nameFetcher);
