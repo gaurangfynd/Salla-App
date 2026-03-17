@@ -159,7 +159,7 @@ const THEMES: Record<string, any> = {
 function AIAgent() {
   const navigate = useNavigate();
   const { merchantId, sallaStoreInfo, appData, usageData, ableToCreateBot, accessToken: token, setAppData, appId, locale, dark, accessToken, setAgentData, setUsageData, agentData } = useSalla();
-  const existingData = appData ?? null;
+  const [existingData, setExistingData ]= useState<any>(appData ?? null);
   const usage = (usageData as any)?.usage ?? {};
   const [isReadyForSetup, setIsReadyForSetup] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
@@ -190,11 +190,12 @@ function AIAgent() {
   const product_type = "boltic";
 
   useEffect(() => {
-    if (existingData) {
+    if (appData) {
+      setExistingData(appData);
       setCurrentStep(3);
     }
     
-  }, [currentStep, existingData]);
+  }, [currentStep, appData]);
 
 
   async function fetchData() {
