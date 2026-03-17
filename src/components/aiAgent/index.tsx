@@ -190,10 +190,11 @@ function AIAgent() {
   const product_type = "boltic";
 
   useEffect(() => {
+    if (existingData) {
+      setCurrentStep(3);
+    }
     
-      console.log("currentStep", currentStep);
-    
-  }, [currentStep]);
+  }, [currentStep, existingData]);
 
 
   async function fetchData() {
@@ -235,7 +236,7 @@ function AIAgent() {
   // Salla equivalent of Shopify's useLoaderData
 
 
-  console.log("Existing Data:", existingData);
+  console.log("Existing Data:", existingData, "App data:", appData);
 
   const planName = usage?.plan?.name || "Free Trial";
   const endDate = usage?.endDate || null;
