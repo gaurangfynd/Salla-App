@@ -253,11 +253,11 @@ function AIAgent() {
   const [pickedFile, setPickedFile] = useState<File | null>(null);
 
 
-  // useEffect(() => {
-  //   if (!ableToCreateBot) {
-  //     navigate("/details");
-  //   }
-  // }, [ableToCreateBot]);
+  useEffect(() => {
+    if (!ableToCreateBot) {
+      setCurrentStep(3);
+    }
+  }, [ableToCreateBot]);
 
 
 
