@@ -6,8 +6,9 @@ import { openWindow } from "../../utils/browser";
 import "./index.less";
 import { useSalla } from "../../context/salla-context";
 import Stepper from "../../common/stepper";
-import { fetchAppData, fetchUsageData, updateCopilot, iconInit, createSallaAgent } from "../../utils/sallaApi";
+import { fetchAppData, fetchUsageData, createSallaAgent } from "../../utils/sallaApi";
 import { embedded } from "@salla.sa/embedded-sdk";
+import { fetchWithAuth } from "../../utils/fetchWithAuth";
 
 
 
@@ -103,10 +104,15 @@ const THEMES: Record<string, any> = {
   },
 };
 
+
+const BACKEND_URL = "";
+
+
+
 function AIAgent() {
   const navigate = useNavigate();
   const { merchantId, sallaStoreInfo, appData, usageData, ableToCreateBot, accessToken: token, setAppData, appId, locale, dark, accessToken, setAgentData, setUsageData, agentData } = useSalla();
-  const [existingData, setExistingData ]= useState<any>(appData ?? null);
+  const [existingData, setExistingData] = useState<any>(appData ?? null);
   const usage = (usageData as any)?.usage ?? {};
   const [isReadyForSetup, setIsReadyForSetup] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
@@ -140,7 +146,7 @@ function AIAgent() {
     if (appData) {
       setExistingData(appData);
     }
-    
+
   }, [appData]);
 
 
@@ -158,11 +164,84 @@ function AIAgent() {
 
   useEffect(() => {
     console.log("currentStep", currentStep);
-    if(currentStep === 3) {
+    if (currentStep === 3) {
       console.log("currentsetep fetchData");
       fetchData();
     }
   }, [currentStep]);
+
+
+  // ---------- update-copilot ----------
+  async function updateCopilot(
+    payload: { sallaStoreId: string; ownerEmail: string; data: Record<string, any> },
+    token: string,
+  ) {
+    console.log("payload:", payload)
+    const res = await fetchWithAuth(
+      `${BACKEND_URL}/api/salla/updateApp`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      },
+      { token, storeId: payload.sallaStoreId },
+    );
+    if (!res.ok) {
+      const text = await res.text().catch(() => "");
+      throw new Error(`updateCopilot API error: ${res.status} ${text}`);
+    }
+    const data = await res.json().catch(() => ({}));
+    console.log("updateCopilot response", data);
+    return data;
+  }
+
+  // ---------- icon-init (get signed upload URL) ----------
+  async function iconInit(
+    payload: { sallaStoreId: string; ownerEmail: string; file_name: string; file_type: string; file_size: number },
+    token: string,
+  ) {
+    const res = await fetchWithAuth(
+      `${BACKEND_URL}/api/salla/icon/init`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      },
+      { token, storeId: payload.sallaStoreId },
+    );
+    if (!res.ok) {
+      const text = await res.text().catch(() => "");
+      throw new Error(`iconInit API error: ${res.status} ${text}`);
+    }
+    const data = await res.json();
+    console.log("iconInit response", data);
+    // returns: { ok, signed: { data: { method, url, fields, cdn_path, storage_type } } }
+    return data;
+  }
+
+  async function createSallaAgent(payload: {
+    ownerFirstName: string;
+    ownerLastName: string;
+    ownerEmail: string;
+    sallaStoreId: string;
+    aiAgentName: string;
+    active?: boolean;
+    companyName: string;
+    companyCountry: string;
+    companyState: string;
+    storefrontToken: string;
+    metadata: Record<string, any>;
+  }): Promise<any> {
+    const res = await fetchWithAuth(`${BACKEND_URL}/api/salla/createApp`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    },
+      { token: accessToken, storeId: merchantId });
+    const data = await res.json();
+    console.log("createSallaAgent response", data);
+    return data;
+  }
 
 
   //console.log("Loader Data -->:", nameFetcher);
@@ -323,23 +402,19 @@ function AIAgent() {
         return updatedSteps;
       });
 
-      const result = await createSallaAgent(
-        {
-          ownerFirstName: sallaStoreInfo.activeAdminStoreUser.name?.split(" ")[0]?.replace(/[^a-zA-Z\u0600-\u06FF]/g, "") || "",
-          ownerLastName: sallaStoreInfo.activeAdminStoreUser.name?.split(" ")[1]?.replace(/[^a-zA-Z\u0600-\u06FF]/g, "") || "Salla",
-          ownerEmail: sallaStoreInfo.activeAdminStoreUser.email,
-          sallaStoreId: merchantId,
-          aiAgentName: sallaStoreInfo.merchant.name,
-          active: true,
-          metadata: {},
-          companyName: sallaStoreInfo.merchant.name,
-          companyCountry: 'Saudi Arabia',
-          companyState: 'Mecca',
-          storefrontToken: accessToken ?? "",
-        },
-        accessToken ?? "",
-        merchantId,
-      );
+      const result = await createSallaAgent({
+        ownerFirstName: sallaStoreInfo.activeAdminStoreUser.name?.split(" ")[0]?.replace(/[^a-zA-Z\u0600-\u06FF]/g, "") || "",
+        ownerLastName: sallaStoreInfo.activeAdminStoreUser.name?.split(" ")[1]?.replace(/[^a-zA-Z\u0600-\u06FF]/g, "") || "Salla",
+        ownerEmail: sallaStoreInfo.activeAdminStoreUser.email,
+        sallaStoreId: merchantId,
+        aiAgentName: sallaStoreInfo.merchant.name,
+        active: true,
+        metadata: {},
+        companyName: sallaStoreInfo.merchant.name,
+        companyCountry: 'Saudi Arabia',
+        companyState: 'Mecca',
+        storefrontToken: accessToken ?? "",
+      });
 
       if (!result?.data?.success) {
         console.error("createSallaAgent failed:", result?.error || result?.message);
