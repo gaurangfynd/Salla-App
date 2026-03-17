@@ -7,11 +7,10 @@ import { SallaProvider } from './context/salla-context.tsx'
 import { ThemeProvider } from './context/theme-context.tsx'
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+
     <SallaProvider>
       <ThemeProvider>
         <App />
       </ThemeProvider>
     </SallaProvider>
-  </StrictMode>,
 )
