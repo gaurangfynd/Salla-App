@@ -189,6 +189,12 @@ function AIAgent() {
 
   const product_type = "boltic";
 
+  useEffect(() => {
+    
+      console.log("currentStep", currentStep);
+    
+  }, [currentStep]);
+
 
   async function fetchData() {
     const ownerEmail = sallaStoreInfo?.email;
