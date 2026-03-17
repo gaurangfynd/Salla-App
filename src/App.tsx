@@ -38,7 +38,7 @@ function App() {
     async function init() {
       try {
         // 1) Establish connection with Salla Dashboard
-        await embedded.init({ debug: true });
+        // await embedded.init({ debug: true });
         // embedded.ready();
 
         // 2) Try to get the short-lived session token from Salla

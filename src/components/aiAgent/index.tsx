@@ -306,11 +306,11 @@ function AIAgent() {
   const [pickedFile, setPickedFile] = useState<File | null>(null);
 
 
-  useEffect(() => {
-    if (!ableToCreateBot) {
-      navigate("/details");
-    }
-  }, [ableToCreateBot]);
+  // useEffect(() => {
+  //   if (!ableToCreateBot) {
+  //     navigate("/details");
+  //   }
+  // }, [ableToCreateBot]);
 
   async function createSallaAgent(payload: {
     ownerFirstName: string;
@@ -506,13 +506,13 @@ function AIAgent() {
 
 
 
-  useEffect(() => {
-    if (steps[2].completed && agentData?.id) {
-      setTimeout(() => {
-        navigate(`/details`);
-      }, 2000);
-    }
-  }, [steps, agentData, navigate]);
+  // useEffect(() => {
+  //   if (steps[2].completed && agentData?.id) {
+  //     setTimeout(() => {
+  //       navigate(`/details`);
+  //     }, 2000);
+  //   }
+  // }, [steps, agentData, navigate]);
 
 
 
