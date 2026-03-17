@@ -199,6 +199,7 @@ function AIAgent() {
 
 
   async function fetchData() {
+    console.log("inside fetchData");
     const ownerEmail = sallaStoreInfo?.email;
     const tokenValue = accessToken;
     const app = await fetchAppData(merchantId || "", ownerEmail || "", tokenValue || "");
@@ -428,6 +429,7 @@ function AIAgent() {
         });
 
         if (result?.data?.data?.id) {
+          console.log("inside fetchData after creating agent");
           fetchData();
         }
 
