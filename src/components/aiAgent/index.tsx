@@ -861,9 +861,9 @@ function AIAgent() {
 
       console.log("initResponse in call pass", initResponse);
 
-      if (!initResponse?.data?.success) {
-        throw new Error(initResponse?.data?.error || "Icon init failed");
-      }
+      // if (!initResponse?.data?.success) {
+      //   throw new Error(initResponse?.data?.error || "Icon init failed");
+      // }
 
       const signed = initResponse?.data?.data;
       const { method = "PUT", url, fields, cdn_path } = signed || {};
