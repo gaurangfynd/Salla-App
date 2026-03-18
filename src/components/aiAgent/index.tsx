@@ -864,13 +864,15 @@ function AIAgent() {
       const signed = initResponse?.data?.data;
       const { method = "PUT", url, fields, cdn_path } = signed || {};
 
+      console.log("signed", signed, url, fields, cdn_path);
+
       if (!url || !cdn_path) {
         throw new Error("Missing signed URL or cdn_path from icon init");
       }
 
       // 2) Upload via Pixelbin SDK
-      await Pixelbin.upload(file, { url, fields });
-
+      const pixelbinData = await Pixelbin.upload(file, { url, fields });
+      console.log("pixelbinData", pixelbinData);
       // 3) Store cdn_path for next save and sync into draft
       setPendingIconCdnPath(cdn_path);
       updateDraft(["icon"], cdn_path);
