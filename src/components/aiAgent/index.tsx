@@ -859,6 +859,8 @@ function AIAgent() {
         token ?? "",
       );
 
+      console.log("initResponse in call pass", initResponse);
+
       if (!initResponse?.data?.success) {
         throw new Error(initResponse?.data?.error || "Icon init failed");
       }
