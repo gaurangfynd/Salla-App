@@ -127,7 +127,8 @@ function AIAgent() {
   } | null>(null);
 
   const [currentStep, setCurrentStep] = useState<0 | 2 | 3 | 4>(
-    existingData ? 3 : 0
+    // existingData ? 3 : 0
+    3
   );
   const [productAccountData, setProductAccountData] = useState<any>(null);
   const [userId, setUserId] = useState<string | null>(null);
@@ -865,7 +866,7 @@ function AIAgent() {
       //   throw new Error(initResponse?.data?.error || "Icon init failed");
       // }
 
-      const signed = initResponse?.data?.data;
+      const signed = initResponse?.data;
       const { method = "PUT", url, fields, cdn_path } = signed || {};
 
       console.log("signed", signed, url, fields, cdn_path);
