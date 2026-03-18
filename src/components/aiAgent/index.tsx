@@ -209,12 +209,14 @@ function AIAgent() {
       },
       { token, storeId: payload.sallaStoreId },
     );
+
+    console.log("iconInit response in main call", res);
     if (!res.ok) {
       const text = await res.text().catch(() => "");
       throw new Error(`iconInit API error: ${res.status} ${text}`);
     }
     const data = await res.json();
-    console.log("iconInit response", data);
+    console.log("iconInit response in main call", data);
     // returns: { ok, signed: { data: { method, url, fields, cdn_path, storage_type } } }
     return data;
   }
