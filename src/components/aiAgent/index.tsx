@@ -9,6 +9,7 @@ import Stepper from "../../common/stepper";
 import { fetchAppData, fetchUsageData, createSallaAgent } from "../../utils/sallaApi";
 import { embedded } from "@salla.sa/embedded-sdk";
 import { fetchWithAuth } from "../../utils/fetchWithAuth";
+import Pixelbin from "@pixelbin/core";
 
 
 
