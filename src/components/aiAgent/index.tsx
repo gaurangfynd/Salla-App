@@ -122,7 +122,6 @@ function AIAgent() {
 
   const [currentStep, setCurrentStep] = useState<0 | 2 | 3 | 4>(
     existingData ? 3 : 0
-    
   );
   const [productAccountData, setProductAccountData] = useState<any>(null);
   const [userId, setUserId] = useState<string | null>(null);
@@ -149,6 +148,16 @@ function AIAgent() {
     console.log("inside fetchData");
     const ownerEmail = sallaStoreInfo?.email;
     const tokenValue = accessToken;
+
+    if (!merchantId || !ownerEmail || !tokenValue) {
+      console.log("Skipping fetchData until Salla auth context is ready", {
+        merchantId,
+        ownerEmail,
+        hasToken: Boolean(tokenValue),
+      });
+      return;
+    }
+
     const app = await fetchAppData(merchantId || "", ownerEmail || "", tokenValue || "");
     if (app) setAppData(app);
 
@@ -163,7 +172,7 @@ function AIAgent() {
       console.log("currentsetep fetchData");
       fetchData();
     }
-  }, [currentStep]);
+  }, [currentStep, merchantId, sallaStoreInfo?.email, accessToken]);
 
 
   // ---------- update-copilot ----------
@@ -442,15 +451,6 @@ function AIAgent() {
         }
 
         setTimeout(() => {
-          setSteps((prevSteps) => {
-            const updatedSteps = [...prevSteps];
-            updatedSteps[2].loading = false;
-            updatedSteps[2].completed = true;
-            return updatedSteps;
-          });
-        }, 1000);
-
-        setTimeout(() => {
           setCurrentStep(3);
         }, 3000);
       }
@@ -710,8 +710,10 @@ function AIAgent() {
       setPendingIconCdnPath("");
 
       console.log("Copilot updated successfully");
+      embedded.ui.toast.success("Kaily's settings updated successfully");
     } catch (err) {
       console.error("updateCopilot failed:", err);
+      embedded.ui.toast.error("Failed to update Kaily's settings");
     }
   };
 
@@ -886,8 +888,10 @@ function AIAgent() {
       setPendingIconCdnPath(cdn_path);
       updateDraft(["icon"], cdn_path);
       console.log("Icon uploaded, cdn_path:", cdn_path);
+      embedded.ui.toast.success("Icon uploaded successfully");
     } catch (err) {
       console.error("Icon upload failed:", err);
+      embedded.ui.toast.error("Failed to upload icon");
       setIconError(String(err));
     } finally {
       setIconUploading(false);
