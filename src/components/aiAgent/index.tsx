@@ -342,7 +342,7 @@ function AIAgent() {
     if (!ableToCreateBot && appData) {
       setCurrentStep(3);
     }
-  }, [ableToCreateBot]);
+  }, [ableToCreateBot, appData]);
 
 
 
