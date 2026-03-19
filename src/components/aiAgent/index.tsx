@@ -121,8 +121,8 @@ function AIAgent() {
   } | null>(null);
 
   const [currentStep, setCurrentStep] = useState<0 | 2 | 3 | 4>(
-    // existingData ? 3 : 0
-    3
+    existingData ? 3 : 0
+    
   );
   const [productAccountData, setProductAccountData] = useState<any>(null);
   const [userId, setUserId] = useState<string | null>(null);
