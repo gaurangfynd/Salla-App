@@ -12,12 +12,6 @@ import { fetchWithAuth } from "../../utils/fetchWithAuth";
 import Pixelbin from "@pixelbin/core";
 
 
-
-
-
-
-
-
 const THEMES: Record<string, any> = {
   "cosmic-chills": {
     label: "Cosmic Chills",
@@ -109,7 +103,6 @@ const THEMES: Record<string, any> = {
 const BACKEND_URL = "";
 
 
-
 function AIAgent() {
   const navigate = useNavigate();
   const { merchantId, sallaStoreInfo, appData, usageData, ableToCreateBot, accessToken: token, setAppData, appId, locale, dark, accessToken, setAgentData, setUsageData, agentData } = useSalla();
@@ -128,8 +121,8 @@ function AIAgent() {
   } | null>(null);
 
   const [currentStep, setCurrentStep] = useState<0 | 2 | 3 | 4>(
-    existingData ? 3 : 0
-    //3
+   // existingData ? 3 : 0
+    3
   );
   const [productAccountData, setProductAccountData] = useState<any>(null);
   const [userId, setUserId] = useState<string | null>(null);
@@ -1230,7 +1223,7 @@ function AIAgent() {
                 >
                   {/* Header */}
                   <div
-                    className="flex items-center justify-between px-6 py-4"
+                    className="flex items-center justify-between px-6 py-2"
                     style={{ borderBottom: "1px solid var(--salla-border-color)" }}
                   >
                     <h2 className="text-base font-semibold" style={{ color: "var(--salla-primary-color)" }}>
@@ -1254,8 +1247,8 @@ function AIAgent() {
                   <div className="flex flex-col gap-3 px-6 py-5">
                     <textarea
                       ref={personaTextareaRef}
-                      rows={14}
-                      className="w-full resize-none rounded-xl border px-4 py-3 text-sm outline-none transition"
+                      rows={7}
+                      className="w-full resize-none rounded-lg border px-4 py-3 text-sm outline-none transition"
                       style={{
                         borderColor: personaError ? "#ef4444" : "var(--salla-border-color)",
                         backgroundColor: "var(--salla-background-color)",
@@ -1297,12 +1290,12 @@ function AIAgent() {
 
                   {/* Footer */}
                   <div
-                    className="flex items-center justify-end gap-3 px-6 py-4"
+                    className="flex items-center justify-end gap-3 px-6 py-2"
                     style={{ borderTop: "1px solid var(--salla-border-color)" }}
                   >
                     <button
                       type="button"
-                      className="cursor-pointer rounded-xl border px-5 py-2 text-sm font-medium transition hover:opacity-80"
+                      className="cursor-pointer rounded-lg border px-5 py-2 text-sm font-medium transition hover:opacity-80"
                       style={{
                         borderColor: "var(--salla-border-color)",
                         color: "var(--salla-primary-color)",
@@ -1320,7 +1313,7 @@ function AIAgent() {
                     <button
                       type="button"
                       disabled={!isPersonaDirty || !!personaError}
-                      className="cursor-pointer rounded-xl px-5 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-40 hover:opacity-85"
+                      className="cursor-pointer rounded-lg px-5 py-2 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-40 hover:opacity-85"
                       style={{
                         backgroundColor: "var(--salla-secondary-color)",
                         color: "var(--salla-light-mode-primary-color)",
@@ -1396,7 +1389,7 @@ function AIAgent() {
                   <div className="flex items-start gap-4">
                     {/* Avatar + update pill */}
                     <div className="relative">
-                      <div className="h-14 w-14 overflow-hidden rounded-xl border border-gray-200 bg-white">
+                      <div className="h-14 w-14 overflow-hidden rounded-lg border border-gray-200 bg-white">
                         <img
                           className="h-full w-full object-contain"
                           src={
@@ -1408,10 +1401,10 @@ function AIAgent() {
                         />
                       </div>
 
-                      <div className="group absolute -bottom-2 right-1">
+                      <div className="group absolute -bottom-2 right-0">
                         <button
                           type="button"
-                          className="flex items-center gap-2 rounded-lg bg-gray-200 px-2 py-1 text-sm font-medium text-[var(--salla-primary-color)] transition hover:text-white cursor-pointer"
+                          className="flex items-center gap-2 rounded-lg bg-[var(--salla-background-color)] px-2 py-1 text-sm font-medium text-[var(--salla-primary-color)] transition  cursor-pointer border border-[var(--salla-border-color)]"
                           onClick={() => !iconUploading && triggerIconPicker()}
                           disabled={iconUploading}
                         >
@@ -1457,9 +1450,9 @@ function AIAgent() {
                   {/* Toggle right action */}
                   <button
                     onClick={() => setShowSecondItem(!showSecondItem)}
-                    className="inline-flex cursor-pointer items-center gap-2 rounded-xl transition border border-[var(--salla-secondary-color)] text-[var(--salla-secondary-color)]"
+                    className="inline-flex cursor-pointer items-center gap-2 rounded-lg transition border border-[var(--salla-secondary-color)] text-[var(--salla-secondary-color)]"
                   >
-                    <p className="text-sm py-2 font-medium p-2 text-[var(--salla-primary-color)] ">
+                    <p className="text-sm py-1.5 font-medium px-3 text-[var(--salla-primary-color)] ">
                       {showSecondItem ? "Hide Agent" : "Test Agent"}
                     </p>
                   </button>
@@ -1486,7 +1479,7 @@ function AIAgent() {
                       (
                         <button
                           type="button"
-                          className="cursor-pointer rounded-xl  px-3 py-1.5   transition border border-[var(--salla-secondary-color)]"
+                          className="cursor-pointer rounded-lg  px-3 py-1.5   transition border border-[var(--salla-secondary-color)]"
                         >
                           <span className="text-sm font-medium text-[var(--salla-secondary-color)] ">
                             Enabled
@@ -1496,7 +1489,7 @@ function AIAgent() {
                       (
                         <button
                           type="button"
-                          className="cursor-pointer rounded-xl  px-3 py-1.5   transition bg-[var(--salla-secondary-color)]"
+                          className="cursor-pointer rounded-lg  px-3 py-1.5   transition bg-[var(--salla-secondary-color)]"
                           onClick={() => onToggleEmbed(!embedEnabled)}
                         >
                           <span className="text-sm font-medium text-[var(--salla-light-mode-primary-color)] ">
@@ -1520,7 +1513,7 @@ function AIAgent() {
                         </label>
                         <input
                           type="text"
-                          className="w-full rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-2 text-sm !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)]   outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]"
+                          className="w-full rounded-lg border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-2 text-sm !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)]   outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]"
                           placeholder="Enter AI agent name"
                           value={draftCopilot?.name || ""}
                           onInput={(e) => {
@@ -1552,7 +1545,7 @@ function AIAgent() {
                         <label className="text-sm font-medium text-[var(--salla-primary-color)]">
                           AI model
                         </label>
-                        <select className="w-full rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-1 !text-sm !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)]   outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]" value={draftCopilot?.configuration?.provider?.chatModelName || ""}
+                        <select className="w-full rounded-lg border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-1 !text-sm !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)]   outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]" value={draftCopilot?.configuration?.provider?.chatModelName || ""}
                           onChange={(e: any) =>
                             updateDraft(["configuration", "provider", "chatModelName"], e?.target?.value)
                           }>
@@ -1647,7 +1640,7 @@ function AIAgent() {
                         <label className="text-sm font-medium text-[var(--salla-primary-color)]">
                           Tone
                         </label>
-                        <select className="w-full rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-1 !text-sm !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)]   outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]"
+                        <select className="w-full rounded-lg border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-1 !text-sm !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)]   outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]"
                           value={draftCopilot?.configuration?.traits?.personality || ""}
                           onChange={(e: any) =>
                             updateDraft(["configuration", "traits", "personality"], e?.target?.value)
@@ -1677,7 +1670,7 @@ function AIAgent() {
 
                       <textarea
                         rows={6}
-                        className="w-full rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-2 text-sm !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)]   outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]"
+                        className="w-full rounded-lg border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-2 text-sm !text-[var(--salla-secondary-font-color)] placeholder-[var(--salla-secondary-font-color)]   outline-none transition focus:border-[var(--salla-secondary-color)] focus:ring-1 focus:ring-border-[var(--salla-secondary-color)]"
                         placeholder="**Role:** You are an E-commerce Shopping Assistant..."
                         value={draftCopilot?.persona || ""}
 
@@ -1696,7 +1689,7 @@ function AIAgent() {
                         </h3>
 
                         {/* Segmented control */}
-                        <div className="inline-flex  border border-[var(--salla-border-color)] rounded-xl bg-[var(--salla-background-color)] p-1">
+                        <div className="inline-flex  border border-[var(--salla-border-color)] rounded-lg bg-[var(--salla-background-color)] p-1">
                           <button
                             type="button"
                             onClick={() => setActiveTab("template")}
@@ -1749,7 +1742,7 @@ function AIAgent() {
                                     },
                                   );
                                 }}
-                                className={`cursor-pointer rounded-xl p-0.5 transition ${selected
+                                className={`cursor-pointer rounded-lg p-0.5 transition ${selected
                                   ? "ring-1 ring-[var(--salla-secondary-color)]"
                                   : "ring-1 ring-transparent hover:ring-[var(--salla-border-color)]"
                                   }`}
@@ -2163,7 +2156,7 @@ function AIAgent() {
                                 Font
                               </label>
                               <select
-                                className="w-full appearance-none rounded-xl border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-2 text-sm !text-[var(--salla-primary-color)]   outline-none transition focus:border-[var(--salla-secondary-color)]  focus:ring-[var(--salla-secondary-color)]"
+                                className="w-full appearance-none rounded-lg border border-[var(--salla-border-color)] bg-[var(--salla-background-color)] px-4 py-2 text-sm !text-[var(--salla-primary-color)]   outline-none transition focus:border-[var(--salla-secondary-color)]  focus:ring-[var(--salla-secondary-color)]"
                                 value={
                                   draftCopilot?.configuration?.appearance?.font
                                     ?.family || ""
@@ -2312,7 +2305,7 @@ function AIAgent() {
 
                     <button
                       type="button"
-                      className="cursor-pointer rounded-xl bg-[var(--salla-secondary-color)] px-4 py-2  font-semibold text-white"
+                      className="cursor-pointer rounded-lg bg-[var(--salla-secondary-color)] px-4 py-1.5  font-semibold text-white"
                       onClick={handleUpgrade}
                     >
                       <span className="text-sm font-medium text-[var(--salla-light-mode-primary-color)] ">
