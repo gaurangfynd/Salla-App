@@ -121,7 +121,7 @@ function AIAgent() {
   } | null>(null);
 
   const [currentStep, setCurrentStep] = useState<0 | 2 | 3 | 4>(
-   // existingData ? 3 : 0
+    // existingData ? 3 : 0
     3
   );
   const [productAccountData, setProductAccountData] = useState<any>(null);
@@ -413,12 +413,12 @@ function AIAgent() {
         storefrontToken: accessToken ?? "",
       });
 
-      if (!result?.data?.success) {
+      if (!result?.success) {
         console.error("createSallaAgent failed:", result?.error || result?.message);
       }
 
-      if (result?.data?.success && result?.data?.data) {
-        setAgentData(result?.data?.data);
+      if (result?.success && result?.data) {
+        setAgentData(result?.data);
         setSteps((prevSteps) => {
           const updatedSteps = [...prevSteps];
           updatedSteps[1].loading = false;
@@ -436,15 +436,25 @@ function AIAgent() {
           return updatedSteps;
         });
 
-        if (result?.data?.data?.id) {
+        if (result?.data?.id) {
           console.log("inside fetchData after creating agent");
           fetchData();
         }
 
         setTimeout(() => {
+          setSteps((prevSteps) => {
+            const updatedSteps = [...prevSteps];
+            updatedSteps[2].loading = false;
+            updatedSteps[2].completed = true;
+            return updatedSteps;
+          });
+        }, 1000);
+
+        setTimeout(() => {
           setCurrentStep(3);
-        }, 2000);
+        }, 3000);
       }
+
     } catch (err) {
       embedded.ui.toast.error("Error while creating agent.");
       setCurrentStep(0);
@@ -941,14 +951,14 @@ function AIAgent() {
                     </p>
                   </div>
                   {/* {ableToCreateBot && ( */}
-                    <button
-                      type="button"
-                      className="cursor-pointer ai-agent__body__card__header-button inline-flex items-center justify-center rounded-lg bg-[var(--salla-secondary-color)] px-4 py-2 text-sm font-medium text-[var(--salla-light-mode-primary-color)] shadow-sm hover:bg-gray-800 transition"
-                      data-testid="setup-button"
-                      onClick={handleSetupRedirection}
-                    >
-                      Setup in 1 click
-                    </button>
+                  <button
+                    type="button"
+                    className="cursor-pointer ai-agent__body__card__header-button inline-flex items-center justify-center rounded-lg bg-[var(--salla-secondary-color)] px-4 py-2 text-sm font-medium text-[var(--salla-light-mode-primary-color)] shadow-sm hover:bg-gray-800 transition"
+                    data-testid="setup-button"
+                    onClick={handleSetupRedirection}
+                  >
+                    Setup in 1 click
+                  </button>
                   {/* )} */}
                 </div>
                 <div className="ai-agent__body__card__header-right">
